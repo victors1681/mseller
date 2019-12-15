@@ -66,7 +66,6 @@ const SignIn = ({navigation}) => {
       validationSchema={LoginValidation}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <KeyboardAvoidingView behavior="padding">
-          <Text>HEYYY</Text>
           <LoginContainer>
             {error && <Toast error={error} />}
             <LoginHeader>
