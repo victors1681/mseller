@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SearchBar} from 'react-native-elements';
+import {SearchBar, Header} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -31,11 +31,22 @@ const ClientScreen = () => {
     variables: {name: search},
   });
 
+  console.log('errorerror', error);
+
   return (
     <Container>
+      <Header
+        leftComponent={{icon: 'menu'}}
+        centerComponent={{text: 'Clients'}}
+        rightComponent={{icon: 'home'}}
+      />
       <SearchBar
+        lightTheme
+        round
+        showCancel
+        showLoading={loading}
         // onRefresh={refetch}
-        placeholder="Type Here..."
+        placeholder="Client..."
         onChangeText={setSearch}
         value={search}
       />
@@ -45,7 +56,7 @@ const ClientScreen = () => {
           data.clients.map((l, i) => (
             <ListItem
               rightSubtitle={<Currency value={l.financial.balance} />}
-              onPress={() => console.log('HEAYY')}
+              onPress={() => console.log('pressed')}
               key={i}
               title={`${l.code} - ${l.name}`}
               subtitle={`${l.address.address} - ${l.address.city}`}

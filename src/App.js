@@ -13,6 +13,7 @@ import customTheme from './theme';
 import ApolloConfig from './ApolloConfig';
 
 import AppNavigator from './navigation/AppNavigator';
+import AuthControl from "./navigation/AuthControl";
 
 const AppContainer = styled.View`
   flex: 1;
@@ -32,7 +33,9 @@ const App = () => {
                 <CurrencyProvider>
                   <AppContainer>
                     {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                    <AppNavigator />
+                    <AuthControl>
+                       <AppNavigator />
+                    </AuthControl>
                   </AppContainer>
                 </CurrencyProvider>
               </IntlProvider>

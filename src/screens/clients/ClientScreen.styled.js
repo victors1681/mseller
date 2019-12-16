@@ -1,7 +1,12 @@
 import styled from 'styled-components/native';
-import {ListItem as ListItemNative, SearchBar} from 'react-native-elements';
+import {ListItem as ListItemNative} from 'react-native-elements';
 
-export const Container = styled.SafeAreaView`
+const containerStyle = theme => ({
+  backgroundColor: theme.colors.lightGray,
+});
+export const Container = styled.View.attrs(({theme}) => ({
+  containerStyle: containerStyle(theme),
+}))`
   flex: 1;
 `;
 

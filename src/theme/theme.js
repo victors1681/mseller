@@ -1,4 +1,15 @@
 const theme = {
+  Header: {
+    containerStyle: {
+      backgroundColor: '#fafafa',
+    },
+  },
+  SearchBar: {
+    containerStyle: {
+      backgroundColor: '#fafafa',
+      border: 'none',
+    },
+  },
   colors: {
     lightGray: '#fafafa',
     primary: '#06c',
