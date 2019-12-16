@@ -3,6 +3,7 @@ import {SearchBar} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import Currency from '../../common/Currency';
 import {Container, ListItem} from './ClientScreen.styled';
 
 const GET_CLIENTS = gql`
@@ -31,18 +32,19 @@ const ClientScreen = () => {
   });
 
   return (
-    <Container style={{backgroundColor: '#fafafa'}}>
+    <Container>
       <SearchBar
         // onRefresh={refetch}
         placeholder="Type Here..."
         onChangeText={setSearch}
         value={search}
       />
+
       <ScrollView>
         {data &&
           data.clients.map((l, i) => (
             <ListItem
-              rightSubtitle={`$${l.financial.balance.toFixed(2)}`}
+              rightSubtitle={<Currency value={l.financial.balance} />}
               onPress={() => console.log('HEAYY')}
               key={i}
               title={`${l.code} - ${l.name}`}

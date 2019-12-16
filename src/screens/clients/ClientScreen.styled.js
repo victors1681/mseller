@@ -17,6 +17,4 @@ const subTitleStyle = theme => ({
 export const ListItem = styled(ListItemNative).attrs(({theme}) => ({
   titleStyle: titleStyle(theme),
   subtitleStyle: subTitleStyle(theme),
-}))`
-  ${({theme}) => console.log('theme', theme)}
-`;
+}))``;
