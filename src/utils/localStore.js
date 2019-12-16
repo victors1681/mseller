@@ -7,7 +7,7 @@ export const setToken = async token => {
   }
 
   try {
-    await AsyncStorage.setItem('userInfo', token);
+    await AsyncStorage.setItem('userToken', token);
     console.log('token saved');
   } catch (e) {
     console.error(e);
@@ -16,8 +16,9 @@ export const setToken = async token => {
 
 export const getToken = async () => {
   try {
-    const userInfo = await AsyncStorage.getItem('userInfo');
-    return userInfo;
+    const userToken = await AsyncStorage.getItem('userToken');
+
+    return userToken;
   } catch (e) {
     console.error(e);
   }

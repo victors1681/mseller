@@ -21,9 +21,8 @@ const runPersiste = async () => {
   });
 };
 
-const request = operation => {
-  const token = getToken();
-
+const request = async operation => {
+  const token = await getToken();
   operation.setContext({
     headers: {
       authorization: token ? `Bearer ${token}` : '',
