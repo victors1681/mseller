@@ -4,7 +4,7 @@ import {getToken} from '../utils/localStore';
 
 const checkAuth = async navigation => {
   const userToken = getToken();
-  console.log("userTokenuserToken", userToken)
+  console.log('userTokenuserToken', userToken);
   // navigation.navigate(userToken ? 'App' : 'Auth');
   navigation.navigate('Auth');
 };

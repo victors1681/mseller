@@ -3,9 +3,9 @@ const theme = {
     size: {
       verySmall: 10,
       small: 12,
-      regular: 14
-    }
-  }
+      regular: 14,
+    },
+  },
 };
 
 export default theme;

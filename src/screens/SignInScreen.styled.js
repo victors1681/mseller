@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { Input, Button } from 'react-native-elements';
-import { KeyboardAvoidingView as KAV } from 'react-native';
+import {Input, Button} from 'react-native-elements';
+import {KeyboardAvoidingView as KAV} from 'react-native';
 
 export const KeyboardAvoidingView = styled(KAV)`
   flex: 1;
@@ -26,7 +26,10 @@ export const LoginFooter = styled.View`
   flex: 1;
 `;
 
-export const LoginInput = styled(Input).attrs(({ theme }) => ({ containerStyle: { marginTop: 10 }, labelStyle: { fontWeight: 'normal', fontSize: theme.font.size.small } }))`
+export const LoginInput = styled(Input).attrs(({theme}) => ({
+  containerStyle: {marginTop: 10},
+  labelStyle: {fontWeight: 'normal', fontSize: theme.font.size.small},
+}))`
   margin-top: 20px;
 `;
 

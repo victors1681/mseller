@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { ThemeContext } from 'react-native-elements';
+import {useContext} from 'react';
+import {ThemeContext} from 'react-native-elements';
 
 const useTheme = () => {
-  const { theme } = useContext(ThemeContext);
+  const {theme} = useContext(ThemeContext);
   return theme;
 };
 

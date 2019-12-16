@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const setToken = async (token) => {
+export const setToken = async token => {
   if (!token) {
     console.log('invalid token');
     return;
@@ -21,4 +21,5 @@ export const getToken = async () => {
   } catch (e) {
     console.error(e);
   }
+  return null;
 };
