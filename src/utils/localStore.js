@@ -1,15 +1,10 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const setToken = async (token) => {
   if (!token) {
     console.log('invalid token');
     return;
   }
-  const userInfo = {
-    user: {
-      token
-    }
-  };
 
   try {
     await AsyncStorage.setItem('userInfo', token);
