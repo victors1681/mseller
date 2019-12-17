@@ -3,7 +3,14 @@ import {Platform, StatusBar} from 'react-native';
 import {ThemeProvider, ThemeConsumer} from 'react-native-elements';
 import {ThemeProvider as ThemeProviderStyledComponent} from 'styled-components';
 import styled from 'styled-components/native';
+
+import 'intl';
+// in order to make the intl works on android I had to add
+// def jscFlavor = 'org.webkit:android-jsc-intl:+' in android app
+import 'intl/locale-data/jsonp/en-US';
+import 'intl/locale-data/jsonp/es-US';
 import {IntlProvider} from 'react-intl';
+
 import CurrencyProvider from './common/Currency/CurrencyProvider';
 import translation from './common/i18n/translation';
 
@@ -12,6 +19,11 @@ import ApolloConfig from './ApolloConfig';
 
 import AppNavigator from './navigation/AppNavigator';
 import AuthControl from './navigation/AuthControl';
+
+// if (Platform.OS === 'android') {
+//   required('intl/locale-data/jsonp/en-US');
+//   required('intl/locale-data/jsonp/es-US');
+// }
 
 const AppContainer = styled.View`
   flex: 1;
