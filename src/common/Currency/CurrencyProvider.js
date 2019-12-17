@@ -8,9 +8,12 @@ const CurrencyProvider = ({children}) => {
     style: 'currency',
   });
 
-  useEffect(async () => {
-    const currency = (await getCurrency()) || 'USD';
-    setData({...data, currency});
+  useEffect(() => {
+    const fetchToken = async () => {
+      const currency = (await getCurrency()) || 'USD';
+      setData({...data, currency});
+    };
+    fetchToken();
   }, []);
 
   return (

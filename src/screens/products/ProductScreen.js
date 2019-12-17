@@ -4,40 +4,36 @@ import {ScrollView} from 'react-native';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Currency from '../../common/Currency';
-import {Container, ListItem} from './ClientScreen.styled';
+import {Container, ListItem} from './ProductScreen.styled';
 
-const GET_CLIENTS = gql`
-  query CLIENTS($name: String) {
-    clients(name: $name, limit: 10) {
-      name
+const GET_PRODUCTS = gql`
+  query PRODUCTS($description: String) {
+    products(description: $description, limit: 10) {
       code
-      address {
-        address
-        city
-        state
-        country
-      }
-      financial {
-        balance
+      name
+      description
+      price {
+        name
+        price
       }
     }
   }
 `;
 
-const ClientScreen = () => {
+const ProductScreen = () => {
   const [search, setSearch] = useState('');
 
-  const {loading, error, data} = useQuery(GET_CLIENTS, {
-    variables: {name: search},
+  const {loading, error, data} = useQuery(GET_PRODUCTS, {
+    variables: {description: search},
   });
 
-  console.log('errorerror', error);
+  console.log('error', error);
 
   return (
     <Container>
       <Header
         leftComponent={{icon: 'menu'}}
-        centerComponent={{text: 'Clients'}}
+        centerComponent={{text: 'Products'}}
         rightComponent={{icon: 'home'}}
       />
       <SearchBar
@@ -46,20 +42,24 @@ const ClientScreen = () => {
         showCancel
         showLoading={loading}
         // onRefresh={refetch}
-        placeholder="Client..."
+        placeholder="Product..."
         onChangeText={setSearch}
         value={search}
       />
 
       <ScrollView>
         {data &&
-          data.clients.map((l, i) => (
+          data.products.map((l, i) => (
             <ListItem
-              rightSubtitle={<Currency value={l.financial.balance} />}
+              rightSubtitle={
+                <Currency
+                  value={l.price.find(f => f.name === 'General').price}
+                />
+              }
               onPress={() => console.log('pressed')}
               key={i}
-              title={`${l.code} - ${l.name}`}
-              subtitle={`${l.address.address} - ${l.address.city}`}
+              title={`${l.code} - ${l.description}`}
+              subtitle={`${l.code} -`}
               bottomDivider
             />
           ))}
@@ -68,4 +68,4 @@ const ClientScreen = () => {
   );
 };
 
-export default ClientScreen;
+export default ProductScreen;

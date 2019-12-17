@@ -3,9 +3,7 @@ import {Platform, StatusBar} from 'react-native';
 import {ThemeProvider, ThemeConsumer} from 'react-native-elements';
 import {ThemeProvider as ThemeProviderStyledComponent} from 'styled-components';
 import styled from 'styled-components/native';
-import {addLocaleData, IntlProvider} from 'react-intl';
-// import en from 'react-intl/locale-data/en';
-// import es from 'react-intl/locale-data/es';
+import {IntlProvider} from 'react-intl';
 import CurrencyProvider from './common/Currency/CurrencyProvider';
 import translation from './common/i18n/translation';
 
@@ -13,14 +11,11 @@ import customTheme from './theme';
 import ApolloConfig from './ApolloConfig';
 
 import AppNavigator from './navigation/AppNavigator';
-import AuthControl from "./navigation/AuthControl";
+import AuthControl from './navigation/AuthControl';
 
 const AppContainer = styled.View`
   flex: 1;
 `;
-
-// addLocaleData(en);
-// addLocaleData(es);
 
 const App = () => {
   return (
@@ -34,7 +29,7 @@ const App = () => {
                   <AppContainer>
                     {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                     <AuthControl>
-                       <AppNavigator />
+                      <AppNavigator />
                     </AuthControl>
                   </AppContainer>
                 </CurrencyProvider>

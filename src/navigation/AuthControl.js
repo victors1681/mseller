@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {getToken} from '../utils/localStore';
 
 const checkAuth = async navigation => {
