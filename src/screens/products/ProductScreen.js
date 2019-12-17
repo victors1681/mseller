@@ -17,6 +17,11 @@ const GET_PRODUCTS = gql`
         price
       }
     }
+    document @client {
+      documentId
+      date
+      observations
+    }
   }
 `;
 
@@ -27,15 +32,15 @@ const ProductScreen = () => {
     variables: {description: search},
   });
 
-  console.log('error', error);
+  console.log('error', data);
 
   return (
     <Container>
-      <Header
+      {/* <Header
         leftComponent={{icon: 'menu'}}
         centerComponent={{text: 'Products'}}
         rightComponent={{icon: 'home'}}
-      />
+      /> */}
       <SearchBar
         lightTheme
         round
@@ -66,6 +71,10 @@ const ProductScreen = () => {
       </ScrollView>
     </Container>
   );
+};
+
+ProductScreen.navigationOptions = {
+  title: 'Products',
 };
 
 export default ProductScreen;

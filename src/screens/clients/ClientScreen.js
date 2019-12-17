@@ -35,11 +35,11 @@ const ClientScreen = () => {
 
   return (
     <Container>
-      <Header
+      {/* <Header
         leftComponent={{icon: 'menu'}}
         centerComponent={{text: 'Clients'}}
         rightComponent={{icon: 'home'}}
-      />
+      /> */}
       <SearchBar
         lightTheme
         round
@@ -66,6 +66,9 @@ const ClientScreen = () => {
       </ScrollView>
     </Container>
   );
+};
+ClientScreen.navigationOptions = {
+  title: 'Clients',
 };
 
 export default ClientScreen;

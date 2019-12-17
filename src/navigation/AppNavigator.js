@@ -1,6 +1,6 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 // import {createStackNavigator} from 'react-navigation-stack';
-// import MainTabNavigator from './MainTabNavigator';
+import MainTabNavigator from './MainTabNavigator';
 import SignInScreen from '../screens/SignInScreen';
 // import ClientScreen from '../screens/clients/ClientScreen';
 import ProductScreen from '../screens/products/ProductScreen';
@@ -11,7 +11,7 @@ export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: SignInScreen,
-      App: ProductScreen, // MainTabNavigator,
+      App: MainTabNavigator, // MainTabNavigator,
       Auth: SignInScreen,
     },
     // You could add another route here for authentication.

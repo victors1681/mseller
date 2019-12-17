@@ -2,11 +2,13 @@ import React from 'react';
 import {Platform} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import ProductScreen from '../screens/products/ProductScreen';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ClientScreen from '../screens/clients/ClientScreen';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -22,62 +24,47 @@ const HomeStack = createStackNavigator(
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  ),
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name="home" />,
 };
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const ClientsStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Clients: ClientScreen,
   },
   config,
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+ClientsStack.navigationOptions = {
+  title: 'Clients',
+  tabBarLabel: 'Clients',
   tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
+    <TabBarIcon focused={focused} name="account-group" />
   ),
 };
 
-LinksStack.path = '';
+ClientsStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const ProductsStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    Products: ProductScreen,
   },
   config,
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
-  ),
+ProductsStack.navigationOptions = {
+  title: 'Products',
+  tabBarLabel: 'Products',
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name="package" />,
 };
 
-SettingsStack.path = '';
+ProductsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  ClientsStack,
+  ProductsStack,
 });
 
 tabNavigator.path = '';

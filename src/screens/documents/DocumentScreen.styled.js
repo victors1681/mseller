@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {ListItem as ListItemNative} from 'react-native-elements';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
