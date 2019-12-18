@@ -55,8 +55,11 @@ export const documentLocalState = {
       code: 'AM3-343',
       name: 'Product-test',
       description: 'Testing product',
+      price: 2332.9,
+      quantity: 3,
       tax: [
         {
+          __typename: 0,
           id: '001',
           name: 'ITBIS',
           percentage: 18.0,

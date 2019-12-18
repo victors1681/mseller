@@ -12,4 +12,6 @@ const subTitleStyle = theme => ({
 
 export const ListItem = styled(ListItemNative).attrs(({theme}) => ({
   subtitleStyle: subTitleStyle(theme),
-}))``;
+}))`
+  background-color: ${({isSelected, theme}) => (isSelected ? 'red' : 'white')};
+`;

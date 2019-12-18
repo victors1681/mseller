@@ -35,7 +35,7 @@ const App = () => {
         {({theme}) => (
           <ThemeProviderStyledComponent theme={theme}>
             <ApolloConfig>
-              <IntlProvider locale="es-US" messages={translation.es}>
+              <IntlProvider locale="en-US" messages={translation.es}>
                 <CurrencyProvider>
                   <AppContainer>
                     {Platform.OS === 'ios' && <StatusBar barStyle="default" />}

@@ -3,7 +3,7 @@ import {Platform, Text} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import ProductScreen from '../screens/products/ProductScreen';
-
+import ProductSelectorScreen from '../screens/products/ProductSelectorScreen';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
@@ -34,12 +34,9 @@ HomeStack.path = '';
 const DocumentsStack = createStackNavigator(
   {
     Documents: DocumentsHomeScreen,
-    DocumentEdit: {
-      screen: DocumentEditScreen,
-      navigationOptions: {
-        tabBarVisible: false,
-      },
-    },
+    DocumentEdit: DocumentEditScreen,
+    ProductSelector: ProductSelectorScreen,
+    ClientSelector: ClientScreen,
   },
   config,
 );
