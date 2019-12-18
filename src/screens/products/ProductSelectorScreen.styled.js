@@ -31,7 +31,9 @@ export const ListItem = styled(ListItemNative).attrs(({isSelected, theme}) => ({
 }))``;
 
 export const InputSelectionContainer = styled.View`
-  height: 210;
+  height: ${({isActive}) => (isActive ? 216 : 0)};
+  opacity: ${({isActive}) => (isActive ? 1 : 0)};
+  padding-top: 9px;
 `;
 
 export const InputWrapper = styled.View`
@@ -76,4 +78,5 @@ export const AddItemButton = styled(Button).attrs({
   title: 'Add Item',
 })`
   margin: 10px;
+  margin-top: 5px;
 `;

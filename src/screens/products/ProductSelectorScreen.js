@@ -45,8 +45,9 @@ const ProductSelectorScreen = () => {
 
   console.log('error', data);
 
-  const handleItemSelect = item => () => {
+  const handleItemSelected = item => () => {
     setItemSelection(item);
+    setInputSelection(true);
     quantityRef.current.focus();
     // Set default price to the input
     item.price.map(
@@ -68,7 +69,6 @@ const ProductSelectorScreen = () => {
   };
 
   const handleSearchOnFocus = () => setInputSelection(false);
-  const handleSearchOnBlur = () => setInputSelection(true);
   const handleAddItem = () => {
     schema
       .isValid({
@@ -92,9 +92,7 @@ const ProductSelectorScreen = () => {
         onChangeText={setSearch}
         value={search}
         onFocus={handleSearchOnFocus}
-        onBlur={handleSearchOnBlur}
       />
-
       <ScrollView>
         {data &&
           data.products.map((item, i) => (
@@ -105,7 +103,7 @@ const ProductSelectorScreen = () => {
                 />
               }
               isSelected={item.code === (itemSelected && itemSelected.code)}
-              onPress={handleItemSelect(item)}
+              onPress={handleItemSelected(item)}
               key={i}
               title={`${item.code} - ${item.description}`}
               subtitle={`${item.code} -`}
@@ -113,29 +111,27 @@ const ProductSelectorScreen = () => {
             />
           ))}
       </ScrollView>
-      {isInputSelectionActive && (
-        <InputSelectionContainer>
-          <InputWrapper>
-            <QuantityInput
-              ref={quantityRef}
-              value={quantity}
-              onChangeText={value => setQuantity(value)}
-              onFocus={() => setQuantity('')}
-              onBlur={handleQuantityOnBlur}
-            />
-            <PriceInput
-              ref={priceRef}
-              value={priceSelected}
-              onChangeText={value => setPriceSelected(value)}
-            />
-          </InputWrapper>
-          <PriceButtons
-            priceList={itemSelected && itemSelected.price}
-            handleUpdatePriceInput={handleUpdatePriceInput}
+      <InputSelectionContainer isActive={isInputSelectionActive}>
+        <InputWrapper>
+          <QuantityInput
+            ref={quantityRef}
+            value={quantity}
+            onChangeText={value => setQuantity(value)}
+            onFocus={() => setQuantity('')}
+            onBlur={handleQuantityOnBlur}
           />
-          <AddItemButton onPress={handleAddItem} />
-        </InputSelectionContainer>
-      )}
+          <PriceInput
+            ref={priceRef}
+            value={priceSelected}
+            onChangeText={value => setPriceSelected(value)}
+          />
+        </InputWrapper>
+        <PriceButtons
+          priceList={itemSelected && itemSelected.price}
+          handleUpdatePriceInput={handleUpdatePriceInput}
+        />
+        <AddItemButton onPress={handleAddItem} />
+      </InputSelectionContainer>
     </KeyboardAvoidingView>
   );
 };

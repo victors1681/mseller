@@ -46,7 +46,7 @@ export const FooterTotalValue = styled(Currency)`
 `;
 
 export const AddIcon = styled(Icon).attrs(({theme}) => ({
-  name: 'plus-circle-outline',
+  name: 'plus-circle',
   size: 18,
   color: theme.colors.primary,
 }))`
