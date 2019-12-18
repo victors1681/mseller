@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, Text} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import ProductScreen from '../screens/products/ProductScreen';
@@ -9,6 +9,8 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ClientScreen from '../screens/clients/ClientScreen';
+import DocumentsHomeScreen from '../screens/documents/DocumentsHomeScreen';
+import DocumentEditScreen from '../screens/documents/DocumentEditScreen';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -28,6 +30,37 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
+
+const DocumentsStack = createStackNavigator(
+  {
+    Documents: DocumentsHomeScreen,
+    DocumentEdit: {
+      screen: DocumentEditScreen,
+      navigationOptions: {
+        tabBarVisible: false,
+      },
+    },
+  },
+  config,
+);
+
+DocumentsStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    title: 'Documents',
+    tabBarLabel: 'Documents',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon focused={focused} name="file-document" />
+    ),
+  };
+};
+
+DocumentsStack.path = '';
 
 const ClientsStack = createStackNavigator(
   {
@@ -63,6 +96,7 @@ ProductsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  DocumentsStack,
   ClientsStack,
   ProductsStack,
 });

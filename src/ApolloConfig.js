@@ -50,7 +50,7 @@ const onError = ({graphQLErrors, networkError, operation, forward}) => {
           //     authorization: getNewToken(),
           //   },
           // });
-          setToken(null);
+          // setToken(null);
           // Now, pass the modified operation to the next link
           // in the chain. This effectively intercepts the old
           // failed request, and retries it with a new token

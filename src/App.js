@@ -18,7 +18,6 @@ import customTheme from './theme';
 import ApolloConfig from './ApolloConfig';
 
 import AppNavigator from './navigation/AppNavigator';
-import AuthControl from './navigation/AuthControl';
 
 // if (Platform.OS === 'android') {
 //   required('intl/locale-data/jsonp/en-US');
@@ -40,9 +39,7 @@ const App = () => {
                 <CurrencyProvider>
                   <AppContainer>
                     {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                    <AuthControl>
-                      <AppNavigator />
-                    </AuthControl>
+                    <AppNavigator />
                   </AppContainer>
                 </CurrencyProvider>
               </IntlProvider>

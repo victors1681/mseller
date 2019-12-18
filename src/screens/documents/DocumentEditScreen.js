@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
+
 import {SearchBar, Header} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Currency from '../../common/Currency';
-import {Container, ListItem} from './DocumentScreen.styled';
+import {Container, SaveIcon} from './DocumentEditScreen.styled';
 
 const GET_CLIENTS = gql`
   query CLIENTS($name: String) {
@@ -24,7 +25,7 @@ const GET_CLIENTS = gql`
   }
 `;
 
-const DocumentScreen = () => {
+const DocumentEditScreen = () => {
   const [search, setSearch] = useState('');
 
   const {loading, error, data} = useQuery(GET_CLIENTS, {
@@ -35,15 +36,17 @@ const DocumentScreen = () => {
 
   return (
     <Container>
-      <Header
-        leftComponent={{icon: 'clear'}}
-        centerComponent={{text: 'Order'}}
-        rightComponent={{icon: 'save'}}
-      />
-
       <ScrollView />
     </Container>
   );
 };
 
-export default DocumentScreen;
+DocumentEditScreen.navigationOptions = ({navigation}) => {
+  console.log('screenPropsscreenPropsscreenPropsscreenProps', navigation);
+  return {
+    title: 'New Document',
+    headerRight: () => <SaveIcon onPress={() => alert('test')} />,
+  };
+};
+
+export default DocumentEditScreen;

@@ -4,13 +4,14 @@ import MainTabNavigator from './MainTabNavigator';
 import SignInScreen from '../screens/SignInScreen';
 // import ClientScreen from '../screens/clients/ClientScreen';
 import ProductScreen from '../screens/products/ProductScreen';
+import AuthControlScreen from '../screens/AuthControlScreen';
 
 // const AppStack = createStackNavigator({ Home: MainTabNavigator });
 // const AuthStack = createStackNavigator({SignIn: SignInScreen});
 export default createAppContainer(
   createSwitchNavigator(
     {
-      AuthLoading: SignInScreen,
+      AuthLoading: AuthControlScreen,
       App: MainTabNavigator, // MainTabNavigator,
       Auth: SignInScreen,
     },

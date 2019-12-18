@@ -56,7 +56,8 @@ const ClientScreen = () => {
           data.clients.map((l, i) => (
             <ListItem
               rightSubtitle={<Currency value={l.financial.balance} />}
-              onPress={() => console.log('pressed')}
+              onPress={() =>
+                console.log('pressed', {clientCode: l.code, fromDocument: true})}
               key={i}
               title={`${l.code} - ${l.name}`}
               subtitle={`${l.address.address} - ${l.address.city}`}
