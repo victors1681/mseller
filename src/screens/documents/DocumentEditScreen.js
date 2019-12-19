@@ -22,6 +22,14 @@ import {
   AddIcon,
 } from './DocumentEditScreen.styled';
 
+const updateTotals = items => {
+  const total = items.reduce((acc, current) => {
+    return acc + current.price * current.quantity;
+  }, 0);
+
+  return total;
+};
+
 const DocumentEditScreen = ({navigation}) => {
   const {loading, error, data} = useQuery(GET_CURRENT_DOCUMENT);
   console.log('DATAAA', data, error);
@@ -30,7 +38,7 @@ const DocumentEditScreen = ({navigation}) => {
   }
   console.log('navigation', navigation);
 
-  const {client, items} = data && data.document;
+  const {client, items, total} = data && data.document;
 
   return (
     <Container>
@@ -73,14 +81,17 @@ const DocumentEditScreen = ({navigation}) => {
             key={i}
             title={`${item.code} - ${item.description}`}
             subtitle={`${item.quantity} -`}
-            rightSubtitle={<Currency value={item.price} />}
+            rightTitle={
+              <Currency value={item.price} suffix={`${item.quantity} x `} />
+            }
+            rightSubtitle={<Currency value={item.quantity * item.price} />}
             bottomDividers
           />
         ))}
       </ScrollView>
       <Footer>
         <FooterTotalLabel>Total:</FooterTotalLabel>
-        <FooterTotalValue value={10500.5} />
+        <FooterTotalValue value={total && total.toString()} />
       </Footer>
     </Container>
   );

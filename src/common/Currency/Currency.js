@@ -9,11 +9,16 @@ const Text = styled.Text`
     theme.font.size[size] || theme.font.size.small};
 `;
 
-const Currency = ({value, ...res}) => {
+const Currency = ({value, suffix, ...res}) => {
   const {currency, style} = useContext(Context);
   const intl = useIntl();
 
-  return <Text {...res}>{intl.formatNumber(value, {style, currency})}</Text>;
+  return (
+    <Text {...res}>
+      {suffix}
+      {intl.formatNumber(value, {style, currency})}
+    </Text>
+  );
 };
 
 export default Currency;

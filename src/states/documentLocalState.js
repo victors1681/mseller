@@ -45,32 +45,12 @@ export const documentLocalState = {
     type: 'percentage',
     percentage: 20.0,
   },
-  total: 300.0,
+  total: 0.0,
   totalPaid: 0.0,
-  balance: 300.0,
+  balance: 0.0,
   NCF: '3903949493',
   orderNumber: '12312',
-  items: [
-    {
-      __typename: 0,
-      code: 'AM3-343',
-      name: 'Product-test',
-      description: 'Testing product',
-      price: 2332.9,
-      quantity: 3,
-      tax: [
-        {
-          __typename: 'Tax',
-          id: '001',
-          name: 'ITBIS',
-          percentage: 18.0,
-          deductible: true,
-          description: 'Retenction',
-          status: true,
-        },
-      ],
-    },
-  ],
+  items: [],
 };
 
 export default documentLocalState;

@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
-import {ListItem as ListItemNative, Input, Button} from 'react-native-elements';
+import {
+  ListItem as ListItemNative,
+  Input,
+  Button,
+  Badge,
+} from 'react-native-elements';
 import {
   KeyboardAvoidingView as KAV,
   ScrollView as ScrollViewNative,
@@ -80,3 +85,9 @@ export const AddItemButton = styled(Button).attrs({
   margin: 10px;
   margin-top: 5px;
 `;
+
+export const ItemsCounter = styled(Badge).attrs(({theme}) => ({
+  status: 'primary',
+  containerStyle: {marginRight: 5},
+  textStyle: {fontSize: theme.font.size.verySmall},
+}))``;

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {SearchBar, Header} from 'react-native-elements';
 import {View} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
@@ -14,6 +14,7 @@ import {
   PriceInput,
   InputWrapper,
   ScrollView,
+  ItemsCounter,
 } from './ProductSelectorScreen.styled';
 import PriceButtons from '../../components/PriceButtons';
 import {GET_PRODUCTS, ADD_ITEM} from './graphql/productQuery';
@@ -41,7 +42,9 @@ const createItem = ({code, name, description, tax}, quantity, price) => ({
   tax,
 });
 
-const ProductSelectorScreen = () => {
+const ProductSelectorScreen = props => {
+  console.log(props);
+
   const [search, setSearch] = useState('');
   const [itemSelected, setItemSelection] = useState(null);
   const [isInputSelectionActive, setInputSelection] = useState(false);
@@ -54,9 +57,7 @@ const ProductSelectorScreen = () => {
     variables: {description: search},
   });
 
-  const [addItem, {data: mutationData}] = useMutation(ADD_ITEM);
-
-  console.log('error', mutationData);
+  const [addItem, {data: addItemData}] = useMutation(ADD_ITEM);
 
   const handleItemSelected = (item, setFieldValue) => () => {
     setItemSelection(item);
@@ -84,6 +85,13 @@ const ProductSelectorScreen = () => {
     setInputSelection(false);
   };
 
+  useEffect(() => {
+    console.log('itemsTotal', addItemData);
+    props.navigation.setParams({
+      itemsTotal: addItemData ? addItemData.addItem.length : '0',
+    });
+  }, [addItemData && addItemData.addItem.length]);
+
   return (
     <Formik
       initialValues={{quantity: '1', price: ''}}
@@ -110,7 +118,7 @@ const ProductSelectorScreen = () => {
             value={search}
             onFocus={handleSearchOnFocus}
           />
-          <ScrollView>
+          <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps>
             {data &&
               data.products.map((item, i) => (
                 <ListItem
@@ -163,8 +171,9 @@ const ProductSelectorScreen = () => {
   );
 };
 
-ProductSelectorScreen.navigationOptions = {
+ProductSelectorScreen.navigationOptions = ({navigation}) => ({
   title: 'Items Selection',
-};
+  headerRight: <ItemsCounter value={navigation.getParam('itemsTotal')} />,
+});
 
 export default ProductSelectorScreen;

@@ -78,6 +78,14 @@ const request = async operation => {
   });
 };
 
+const updateTotals = items => {
+  const total = items.reduce((acc, current) => {
+    return acc + current.price * current.quantity;
+  }, 0);
+
+  return total;
+};
+
 const client = new ApolloClient({
   onError,
   request,
@@ -91,7 +99,8 @@ const client = new ApolloClient({
           query: GET_CURRENT_DOCUMENT,
         });
 
-        const doc = {...document, items: [...document.items, item]};
+        const total = updateTotals([...document.items, item]);
+        const doc = {...document, items: [...document.items, item], total};
         console.log('ADDING NEW ITEM!!!!', doc, item);
 
         cache.writeData({

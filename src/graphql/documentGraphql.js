@@ -17,6 +17,7 @@ export const GET_CURRENT_DOCUMENT = gql`
         email
         phonePrimary
       }
+      total
       items {
         code
         name
