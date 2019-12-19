@@ -5,7 +5,7 @@ import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Currency from '../../common/Currency';
 import {Container, ListItem} from './ProductScreen.styled';
-import {GET_PRODUCTS} from './graphql/productQuery';
+import {GET_PRODUCTS} from '../../graphql/productGraphql';
 
 const ProductScreen = () => {
   const [search, setSearch] = useState('');

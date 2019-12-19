@@ -47,6 +47,7 @@ export const documentLocalState = {
   },
   total: 0.0,
   totalPaid: 0.0,
+  totalTax: 0.0,
   balance: 0.0,
   NCF: '3903949493',
   orderNumber: '12312',

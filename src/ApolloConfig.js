@@ -10,7 +10,7 @@ import {
   API_PRODUCTION_ENDPOINT,
   API_DEVELOPMENT_ENDPOINT,
 } from 'react-native-dotenv';
-import {GET_CURRENT_DOCUMENT} from './graphql/documentGraphql';
+import resolvers from './resolvers';
 import {rootState} from './states/rootState';
 
 import {getToken, setToken} from './utils/localStore';
@@ -78,39 +78,13 @@ const request = async operation => {
   });
 };
 
-const updateTotals = items => {
-  const total = items.reduce((acc, current) => {
-    return acc + current.price * current.quantity;
-  }, 0);
-
-  return total;
-};
-
 const client = new ApolloClient({
   onError,
   request,
   cache,
   resolvers: {
     Mutation: {
-      addItem: (_root, {item}, {cache, getCacheKey}) => {
-        const id = getCacheKey({__typename: 'documentCreation'});
-
-        const {document} = cache.readQuery({
-          query: GET_CURRENT_DOCUMENT,
-        });
-
-        const total = updateTotals([...document.items, item]);
-        const doc = {...document, items: [...document.items, item], total};
-        console.log('ADDING NEW ITEM!!!!', doc, item);
-
-        cache.writeData({
-          data: {
-            document: doc,
-          },
-        });
-
-        return doc.items;
-      },
+      ...resolvers.Mutation,
     },
   },
   uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,

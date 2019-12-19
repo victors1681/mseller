@@ -17,7 +17,7 @@ import {
   ItemsCounter,
 } from './ProductSelectorScreen.styled';
 import PriceButtons from '../../components/PriceButtons';
-import {GET_PRODUCTS, ADD_ITEM} from './graphql/productQuery';
+import {GET_PRODUCTS, ADD_ITEM} from '../../graphql/productGraphql';
 
 const ValidationSchema = yup.object().shape({
   quantity: yup

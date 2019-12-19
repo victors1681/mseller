@@ -1,1 +1,3 @@
-export {default as documentLocalState} from './documentLocalState';
+import documentResolvers from './document';
+
+export default documentResolvers;

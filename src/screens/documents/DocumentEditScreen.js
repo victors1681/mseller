@@ -13,27 +13,32 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery, useMutation} from '@apollo/react-hooks';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Currency from '../../common/Currency';
 import {GET_CURRENT_DOCUMENT} from '../../graphql/documentGraphql';
+import {REMOVE_ITEM} from '../../graphql/productGraphql';
 import {
   Container,
   SaveIcon,
   ClientIcon,
   Footer,
+  FooterRow,
+  FooterSubLabel,
+  FooterSubValue,
   FooterTotalLabel,
   FooterTotalValue,
   AddIcon,
   DeleteIcon,
   TouchableItem,
   ActionWrapper,
+  DocumentInfoItem,
+  ClientInfoItem,
 } from './DocumentEditScreen.styled';
 
 const renderListItems = ({item}, rowMap) => {
-  console.log('rowMap', item);
   return (
     <ListItem
       onPress={() => console.log('pressed')}
@@ -50,39 +55,28 @@ const renderListItems = ({item}, rowMap) => {
 
 const DocumentEditScreen = ({navigation}) => {
   const {loading, error, data, refetch} = useQuery(GET_CURRENT_DOCUMENT);
+  const [removeItem, {data: removedItemData}] = useMutation(REMOVE_ITEM);
+
   console.log('DATAAA', data, error);
   if (!data) {
     return <ActivityIndicator />;
   }
 
-  const {client, items, total} = data && data.document;
+  const {client, items, total, totalTax} = data && data.document;
 
   return (
     <Container>
       {/* <ScrollView /> */}
-      <ListItem
+      <DocumentInfoItem
         Component={TouchableScale}
-        friction={90} //
-        tension={100} // These props are passed to the parent component (here TouchableScale)
-        activeScale={0.95} //
-        title="Chris Jackson"
-        titleStyle={{color: 'red', fontWeight: 'bold'}}
-        subtitleStyle={{color: 'red'}}
-        subtitle="Vice Chairman"
-        chevron={{color: 'red'}}
+        title="No. 992-0992"
+        subtitle="Order"
       />
-      <ListItem
+      <ClientInfoItem
         Component={TouchableScale}
-        friction={90} //
-        tension={100} // These props are passed to the parent component (here TouchableScale)
-        activeScale={0.95} //
         leftAvatar={<ClientIcon />}
         title={`${client.code} - ${client.name}`}
-        titleStyle={{color: 'red', fontWeight: 'bold'}}
-        subtitleStyle={{color: 'red'}}
-        subtitle="Vice Chairman"
-        chevron={{color: 'red'}}
-        containerStyle={{margin: 10}}
+        subtitle={client.identification}
         onPress={() => navigation.navigate('ClientSelector', {pickup: true})}
       />
       <Button
@@ -101,11 +95,17 @@ const DocumentEditScreen = ({navigation}) => {
         data={items}
         keyExtractor={item => item.code}
         renderItem={renderListItems}
-        renderHiddenItem={(data, rowMap) => (
+        renderHiddenItem={({item}, rowMap) => (
           <ActionWrapper>
             <Text>Remove</Text>
             <TouchableItem
-              onPress={() => this.deleteRow(rowMap, data.item.key)}>
+              onPress={() => {
+                removeItem({
+                  variables: {itemId: item.code},
+                });
+
+                console.log('rowwwwww', rowMap, item.code, item.key);
+              }}>
               <DeleteIcon />
             </TouchableItem>
           </ActionWrapper>
@@ -128,8 +128,18 @@ const DocumentEditScreen = ({navigation}) => {
         ))} */}
 
       <Footer>
-        <FooterTotalLabel>Total:</FooterTotalLabel>
-        <FooterTotalValue value={total && total.toString()} />
+        <FooterRow>
+          <FooterSubLabel>Discount:</FooterSubLabel>
+          <FooterSubValue value={(0).toString()} />
+        </FooterRow>
+        <FooterRow>
+          <FooterSubLabel>Tax:</FooterSubLabel>
+          <FooterSubValue value={totalTax && totalTax.toString()} />
+        </FooterRow>
+        <FooterRow>
+          <FooterTotalLabel>Total:</FooterTotalLabel>
+          <FooterTotalValue value={total && total.toString()} />
+        </FooterRow>
       </Footer>
     </Container>
   );

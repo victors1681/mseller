@@ -18,6 +18,7 @@ export const GET_CURRENT_DOCUMENT = gql`
         phonePrimary
       }
       total
+      totalTax
       items {
         code
         name
