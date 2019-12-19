@@ -26,8 +26,9 @@ const PriceButtons = ({priceList, handleUpdatePriceInput}) => {
 
   const handleButton = index => {
     setIndex(index);
-    console.log('selected', priceList[index]);
-    handleUpdatePriceInput(priceList[index].price);
+    handleUpdatePriceInput(
+      priceList[index].price && priceList[index].price.toString(),
+    );
   };
   return (
     <ButtonGroup

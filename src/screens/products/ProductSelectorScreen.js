@@ -1,11 +1,11 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {SearchBar, Header} from 'react-native-elements';
 import {View} from 'react-native';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery, useMutation} from '@apollo/react-hooks';
 import * as yup from 'yup';
+import {Formik} from 'formik';
 import Currency from '../../common/Currency';
 import {
-  Container,
   KeyboardAvoidingView,
   ListItem,
   InputSelectionContainer,
@@ -16,123 +16,150 @@ import {
   ScrollView,
 } from './ProductSelectorScreen.styled';
 import PriceButtons from '../../components/PriceButtons';
-import {GET_PRODUCTS} from './graphql/productQuery';
+import {GET_PRODUCTS, ADD_ITEM} from './graphql/productQuery';
 
-const schema = yup.object().shape({
+const ValidationSchema = yup.object().shape({
   quantity: yup
     .number()
     .required()
+    .min(0.1)
     .positive(),
-  priceSelected: yup
+  price: yup
     .number()
+    .min(0.1)
     .required()
     .positive(),
+});
+
+const createItem = ({code, name, description, tax}, quantity, price) => ({
+  __typename: 'documentCreation',
+  code,
+  name,
+  description,
+  price: (price && parseFloat(price)) || 0,
+  quantity: (quantity && parseFloat(quantity)) || 0,
+  tax,
 });
 
 const ProductSelectorScreen = () => {
   const [search, setSearch] = useState('');
   const [itemSelected, setItemSelection] = useState(null);
-  const [priceSelected, setPriceSelected] = useState('');
-  const [quantity, setQuantity] = useState('1');
   const [isInputSelectionActive, setInputSelection] = useState(false);
 
   const priceRef = useRef();
   const quantityRef = useRef();
+  const searchRef = useRef();
 
   const {loading, error, data} = useQuery(GET_PRODUCTS, {
     variables: {description: search},
   });
 
-  console.log('error', data);
+  const [addItem, {data: mutationData}] = useMutation(ADD_ITEM);
 
-  const handleItemSelected = item => () => {
+  console.log('error', mutationData);
+
+  const handleItemSelected = (item, setFieldValue) => () => {
     setItemSelection(item);
     setInputSelection(true);
     quantityRef.current.focus();
     // Set default price to the input
-    item.price.map(
-      p =>
-        p.name &&
-        p.name.toLowerCase() === 'general' &&
-        setPriceSelected((p.price && p.price.toFixed(2).toString()) || ''),
+    const generalPrice = item.price.find(
+      f => f.name.toLowerCase() === 'general',
     );
-  };
-
-  /**
-   * handle default value if is empty
-   */
-  const handleQuantityOnBlur = () => !quantity && setQuantity('1');
-
-  const handleUpdatePriceInput = price => {
-    console.log('price updating input', price);
-    setPriceSelected(`${price}`);
+    setFieldValue('price', generalPrice.price.toFixed(2).toString() || '');
   };
 
   const handleSearchOnFocus = () => setInputSelection(false);
-  const handleAddItem = () => {
-    schema
-      .isValid({
-        quantity,
-        priceSelected,
-      })
-      .then(function(valid) {
-        console.log('isValid', valid);
-      });
+
+  const handleAddItem = ({price, quantity}, {resetForm}) => {
+    if (!itemSelected) {
+      return;
+    }
+    const newItem = createItem(itemSelected, quantity, price);
+    addItem({
+      variables: {item: newItem},
+    });
+    resetForm();
+    searchRef.current.focus();
+    setInputSelection(false);
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={30}>
-      <SearchBar
-        lightTheme
-        round
-        showCancel
-        showLoading={loading}
-        // onRefresh={refetch}
-        placeholder="Product..."
-        onChangeText={setSearch}
-        value={search}
-        onFocus={handleSearchOnFocus}
-      />
-      <ScrollView>
-        {data &&
-          data.products.map((item, i) => (
-            <ListItem
-              rightSubtitle={
-                <Currency
-                  value={item.price.find(f => f.name === 'General').price}
+    <Formik
+      initialValues={{quantity: '1', price: ''}}
+      onSubmit={handleAddItem}
+      validationSchema={ValidationSchema}>
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+        setFieldValue,
+      }) => (
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={30}>
+          <SearchBar
+            lightTheme
+            round
+            showCancel
+            showLoading={loading}
+            ref={searchRef}
+            placeholder="Product..."
+            onChangeText={setSearch}
+            value={search}
+            onFocus={handleSearchOnFocus}
+          />
+          <ScrollView>
+            {data &&
+              data.products.map((item, i) => (
+                <ListItem
+                  rightSubtitle={
+                    <Currency
+                      value={item.price.find(f => f.name === 'General').price}
+                    />
+                  }
+                  isSelected={item.code === (itemSelected && itemSelected.code)}
+                  onPress={handleItemSelected(item, setFieldValue)}
+                  key={i}
+                  title={`${item.code} - ${item.description}`}
+                  subtitle={`${item.code} -`}
+                  bottomDivider
                 />
-              }
-              isSelected={item.code === (itemSelected && itemSelected.code)}
-              onPress={handleItemSelected(item)}
-              key={i}
-              title={`${item.code} - ${item.description}`}
-              subtitle={`${item.code} -`}
-              bottomDivider
+              ))}
+          </ScrollView>
+          <InputSelectionContainer isActive={isInputSelectionActive}>
+            <InputWrapper>
+              <QuantityInput
+                ref={quantityRef}
+                onChangeText={handleChange('quantity')}
+                onFocus={() => setFieldValue('quantity', '')}
+                onBlur={() => {
+                  handleBlur('quantity');
+                  setFieldValue('quantity', '1');
+                }}
+                value={values.quantity}
+                errorMessage={
+                  errors.quantity && touched.quantity && errors.quantity
+                }
+              />
+              <PriceInput
+                ref={priceRef}
+                onChangeText={handleChange('price')}
+                onBlur={handleBlur('price')}
+                value={values.price}
+                errorMessage={errors.price && touched.price && errors.price}
+              />
+            </InputWrapper>
+            <PriceButtons
+              priceList={itemSelected && itemSelected.price}
+              handleUpdatePriceInput={value => setFieldValue('price', value)}
             />
-          ))}
-      </ScrollView>
-      <InputSelectionContainer isActive={isInputSelectionActive}>
-        <InputWrapper>
-          <QuantityInput
-            ref={quantityRef}
-            value={quantity}
-            onChangeText={value => setQuantity(value)}
-            onFocus={() => setQuantity('')}
-            onBlur={handleQuantityOnBlur}
-          />
-          <PriceInput
-            ref={priceRef}
-            value={priceSelected}
-            onChangeText={value => setPriceSelected(value)}
-          />
-        </InputWrapper>
-        <PriceButtons
-          priceList={itemSelected && itemSelected.price}
-          handleUpdatePriceInput={handleUpdatePriceInput}
-        />
-        <AddItemButton onPress={handleAddItem} />
-      </InputSelectionContainer>
-    </KeyboardAvoidingView>
+            <AddItemButton onPress={handleSubmit} loading={loading} />
+          </InputSelectionContainer>
+        </KeyboardAvoidingView>
+      )}
+    </Formik>
   );
 };
 

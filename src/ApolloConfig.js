@@ -10,6 +10,7 @@ import {
   API_PRODUCTION_ENDPOINT,
   API_DEVELOPMENT_ENDPOINT,
 } from 'react-native-dotenv';
+import {GET_CURRENT_DOCUMENT} from './graphql/documentGraphql';
 import {rootState} from './states/rootState';
 
 import {getToken, setToken} from './utils/localStore';
@@ -82,12 +83,24 @@ const client = new ApolloClient({
   request,
   cache,
   resolvers: {
-    MyTest: (__root, _args, {cache}) => {
-      console.log('REVOLVINGGGGGGGG', variables);
-    },
     Mutation: {
-      gatData: (_root, variables, {cache, getCacheKey}) => {
-        console.log('REVOLVINGGGGGGGG', variables);
+      addItem: (_root, {item}, {cache, getCacheKey}) => {
+        const id = getCacheKey({__typename: 'documentCreation'});
+
+        const {document} = cache.readQuery({
+          query: GET_CURRENT_DOCUMENT,
+        });
+
+        const doc = {...document, items: [...document.items, item]};
+        console.log('ADDING NEW ITEM!!!!', doc, item);
+
+        cache.writeData({
+          data: {
+            document: doc,
+          },
+        });
+
+        return doc.items;
       },
     },
   },

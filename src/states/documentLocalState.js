@@ -1,5 +1,5 @@
 export const documentLocalState = {
-  __typename: 0,
+  __typename: 'documentCreation',
   documentId: 'A-23',
   date: '2019-11-12',
   dueDate: '2020-11-01',
@@ -8,6 +8,7 @@ export const documentLocalState = {
   termsConditions: '30%',
   documentType: 'order',
   client: {
+    __typename: 'client',
     code: '001',
     identification: '0011765',
     name: 'Victor',
@@ -59,11 +60,13 @@ export const documentLocalState = {
       quantity: 3,
       tax: [
         {
-          __typename: 0,
+          __typename: 'Tax',
           id: '001',
           name: 'ITBIS',
           percentage: 18.0,
+          deductible: true,
           description: 'Retenction',
+          status: true,
         },
       ],
     },
