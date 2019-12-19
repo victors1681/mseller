@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TouchableOpacity} from 'react-native';
 import Currency from '../../common/Currency';
 
 export const Container = styled.SafeAreaView`
@@ -52,4 +53,29 @@ export const AddIcon = styled(Icon).attrs(({theme}) => ({
 }))`
   margin-top: 2;
   margin-right: 3;
+`;
+
+export const DeleteIcon = styled(Icon).attrs(({theme}) => ({
+  name: 'delete-outline',
+  size: 20,
+  color: theme.colors.white,
+}))``;
+
+export const ActionWrapper = styled.View`
+  align-items: center;
+  background-color: ${({theme}) => theme.colors.error};
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 15;
+`;
+export const TouchableItem = styled(TouchableOpacity)`
+  /* background-color: ${({theme}) => theme.colors.error}; */
+  right: 0;
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 75;
 `;

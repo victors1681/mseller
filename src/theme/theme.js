@@ -40,7 +40,7 @@ const theme = {
     itemSelected: '#C2D7ED',
     dark,
     orange: '#ef5602',
-    error: '#b00e23',
+    error: '#FF6961',
     white: '#ffffff',
   },
   font: {

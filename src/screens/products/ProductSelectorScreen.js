@@ -87,9 +87,11 @@ const ProductSelectorScreen = props => {
 
   useEffect(() => {
     console.log('itemsTotal', addItemData);
-    props.navigation.setParams({
-      itemsTotal: addItemData ? addItemData.addItem.length : '0',
-    });
+    if (addItemData) {
+      props.navigation.setParams({
+        itemsTotal: addItemData ? addItemData.addItem.length : '0',
+      });
+    }
   }, [addItemData && addItemData.addItem.length]);
 
   return (
@@ -118,7 +120,7 @@ const ProductSelectorScreen = props => {
             value={search}
             onFocus={handleSearchOnFocus}
           />
-          <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps>
+          <ScrollView keyboardDismissMode="on-drag">
             {data &&
               data.products.map((item, i) => (
                 <ListItem

@@ -6,10 +6,17 @@ import {
   Divider,
   Button,
 } from 'react-native-elements';
-import {ScrollView, ActivityIndicator} from 'react-native';
+import {
+  ScrollView,
+  ActivityIndicator,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {useQuery} from '@apollo/react-hooks';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Currency from '../../common/Currency';
 import {GET_CURRENT_DOCUMENT} from '../../graphql/documentGraphql';
 import {
@@ -20,23 +27,33 @@ import {
   FooterTotalLabel,
   FooterTotalValue,
   AddIcon,
+  DeleteIcon,
+  TouchableItem,
+  ActionWrapper,
 } from './DocumentEditScreen.styled';
 
-const updateTotals = items => {
-  const total = items.reduce((acc, current) => {
-    return acc + current.price * current.quantity;
-  }, 0);
-
-  return total;
+const renderListItems = ({item}, rowMap) => {
+  console.log('rowMap', item);
+  return (
+    <ListItem
+      onPress={() => console.log('pressed')}
+      title={`${item.code} - ${item.description}`}
+      subtitle={`${item.quantity} -`}
+      rightTitle={
+        <Currency value={item.price} suffix={`${item.quantity} x `} />
+      }
+      rightSubtitle={<Currency value={item.quantity * item.price} />}
+      bottomDividers
+    />
+  );
 };
 
 const DocumentEditScreen = ({navigation}) => {
-  const {loading, error, data} = useQuery(GET_CURRENT_DOCUMENT);
+  const {loading, error, data, refetch} = useQuery(GET_CURRENT_DOCUMENT);
   console.log('DATAAA', data, error);
   if (!data) {
     return <ActivityIndicator />;
   }
-  console.log('navigation', navigation);
 
   const {client, items, total} = data && data.document;
 
@@ -72,9 +89,30 @@ const DocumentEditScreen = ({navigation}) => {
         type="clear"
         icon={<AddIcon />}
         title="Add Items"
-        onPress={() => navigation.navigate('ProductSelector')}
+        onPress={() =>
+          navigation.navigate('ProductSelector', {itemsTotal: items.length})}
       />
-      <ScrollView>
+
+      <SwipeListView
+        closeOnScroll
+        disableRightSwipe
+        closeOnRowOpen
+        closeOnRowBeginSwipe
+        data={items}
+        keyExtractor={item => item.code}
+        renderItem={renderListItems}
+        renderHiddenItem={(data, rowMap) => (
+          <ActionWrapper>
+            <Text>Remove</Text>
+            <TouchableItem
+              onPress={() => this.deleteRow(rowMap, data.item.key)}>
+              <DeleteIcon />
+            </TouchableItem>
+          </ActionWrapper>
+        )}
+        rightOpenValue={-75}
+      />
+      {/* 
         {items.map((item, i) => (
           <ListItem
             onPress={() => console.log('pressed')}
@@ -87,8 +125,8 @@ const DocumentEditScreen = ({navigation}) => {
             rightSubtitle={<Currency value={item.quantity * item.price} />}
             bottomDividers
           />
-        ))}
-      </ScrollView>
+        ))} */}
+
       <Footer>
         <FooterTotalLabel>Total:</FooterTotalLabel>
         <FooterTotalValue value={total && total.toString()} />
