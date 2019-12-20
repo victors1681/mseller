@@ -59,6 +59,42 @@ const documentResolvers = {
 
       return document;
     },
+    selectClient: (
+      _root,
+      {client: {code, identification, name, email, phonePrimary}},
+      {cache, getCacheKey},
+    ) => {
+      const {document} = cache.readQuery({
+        query: GET_CURRENT_DOCUMENT,
+      });
+
+      console.log(
+        'clientclient',
+        code,
+        identification,
+        name,
+        email,
+        phonePrimary,
+      );
+
+      cache.writeData({
+        data: {
+          document: {
+            ...document,
+            client: {
+              code,
+              identification,
+              name,
+              email,
+              phonePrimary,
+              __typename: 'client',
+            },
+          },
+        },
+      });
+
+      return document;
+    },
   },
 };
 

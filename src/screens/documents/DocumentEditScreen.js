@@ -1,18 +1,6 @@
 import React, {useEffect} from 'react';
-import {
-  SearchBar,
-  Header,
-  ListItem,
-  Divider,
-  Button,
-} from 'react-native-elements';
-import {
-  ScrollView,
-  ActivityIndicator,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {Button} from 'react-native-elements';
+import {ActivityIndicator, Text} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
@@ -36,11 +24,12 @@ import {
   ActionWrapper,
   DocumentInfoItem,
   ClientInfoItem,
+  CustomListItem,
 } from './DocumentEditScreen.styled';
 
 const renderListItems = ({item}, rowMap) => {
   return (
-    <ListItem
+    <CustomListItem
       onPress={() => console.log('pressed')}
       title={`${item.code} - ${item.description}`}
       subtitle={`${item.quantity} -`}
@@ -66,7 +55,6 @@ const DocumentEditScreen = ({navigation}) => {
 
   return (
     <Container>
-      {/* <ScrollView /> */}
       <DocumentInfoItem
         Component={TouchableScale}
         title="No. 992-0992"
@@ -75,9 +63,14 @@ const DocumentEditScreen = ({navigation}) => {
       <ClientInfoItem
         Component={TouchableScale}
         leftAvatar={<ClientIcon />}
-        title={`${client.code} - ${client.name}`}
-        subtitle={client.identification}
-        onPress={() => navigation.navigate('ClientSelector', {pickup: true})}
+        title={
+          client
+            ? `${client && client.code} - ${client && client.name}`
+            : 'Select a Client'
+        }
+        subtitle={client && client.identification}
+        onPress={() =>
+          navigation.navigate('ClientSelector', {pickupClient: true})}
       />
       <Button
         type="clear"
@@ -112,21 +105,6 @@ const DocumentEditScreen = ({navigation}) => {
         )}
         rightOpenValue={-75}
       />
-      {/* 
-        {items.map((item, i) => (
-          <ListItem
-            onPress={() => console.log('pressed')}
-            key={i}
-            title={`${item.code} - ${item.description}`}
-            subtitle={`${item.quantity} -`}
-            rightTitle={
-              <Currency value={item.price} suffix={`${item.quantity} x `} />
-            }
-            rightSubtitle={<Currency value={item.quantity * item.price} />}
-            bottomDividers
-          />
-        ))} */}
-
       <Footer>
         <FooterRow>
           <FooterSubLabel>Discount:</FooterSubLabel>

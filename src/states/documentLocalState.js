@@ -7,14 +7,7 @@ export const documentLocalState = {
   annotation: 'test annotation',
   termsConditions: '30%',
   documentType: 'order',
-  client: {
-    __typename: 'client',
-    code: '001',
-    identification: '0011765',
-    name: 'Victor',
-    email: 'victors1681@gmail.com',
-    phonePrimary: '929-286-112',
-  },
+  client: null,
   retentions: [
     {
       __typename: 3,

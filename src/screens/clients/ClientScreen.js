@@ -1,51 +1,41 @@
 import React, {useState} from 'react';
 import {SearchBar, Header} from 'react-native-elements';
 import {ScrollView} from 'react-native';
-import {useQuery} from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import {useQuery, useMutation} from '@apollo/react-hooks';
 import Currency from '../../common/Currency';
 import {Container, ListItem} from './ClientScreen.styled';
+import {GET_CLIENTS, CLIENT_SELECTION} from '../../graphql/clientGraphql';
 
-const GET_CLIENTS = gql`
-  query CLIENTS($name: String) {
-    clients(name: $name, limit: 10) {
-      name
-      code
-      address {
-        address
-        city
-        state
-        country
-      }
-      financial {
-        balance
-      }
-    }
-  }
-`;
-
-const ClientScreen = () => {
+const ClientScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
+
+  const [selectClient] = useMutation(CLIENT_SELECTION);
 
   const {loading, error, data} = useQuery(GET_CLIENTS, {
     variables: {name: search},
   });
 
-  console.log('errorerror', error);
+  const handleClientSelection = client => () => {
+    const navigateTo = navigation.getParam('pickupClient')
+      ? 'DocumentEdit'
+      : 'ClientDetail';
+    if (navigateTo === 'DocumentEdit') {
+      selectClient({
+        variables: {
+          client,
+        },
+      });
+    }
+    navigation.navigate(navigateTo, {client});
+  };
 
   return (
     <Container>
-      {/* <Header
-        leftComponent={{icon: 'menu'}}
-        centerComponent={{text: 'Clients'}}
-        rightComponent={{icon: 'home'}}
-      /> */}
       <SearchBar
         lightTheme
         round
         showCancel
         showLoading={loading}
-        // onRefresh={refetch}
         placeholder="Client..."
         onChangeText={setSearch}
         value={search}
@@ -53,14 +43,13 @@ const ClientScreen = () => {
 
       <ScrollView>
         {data &&
-          data.clients.map((l, i) => (
+          data.clients.map((client, i) => (
             <ListItem
-              rightSubtitle={<Currency value={l.financial.balance} />}
-              onPress={() =>
-                console.log('pressed', {clientCode: l.code, fromDocument: true})}
-              key={i}
-              title={`${l.code} - ${l.name}`}
-              subtitle={`${l.address.address} - ${l.address.city}`}
+              rightSubtitle={<Currency value={client.financial.balance} />}
+              onPress={handleClientSelection(client)}
+              key={client.code}
+              title={`${client.code} - ${client.name}`}
+              subtitle={`${client.address.address} - ${client.address.city}`}
               bottomDivider
             />
           ))}

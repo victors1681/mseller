@@ -6,12 +6,13 @@ export const KeyboardAvoidingView = styled(KAV)`
   flex: 1;
 `;
 
-export const LoginContainer = styled.View`
+export const LoginContainer = styled.SafeAreaView`
   flex: 1;
 `;
 
 export const LoginHeader = styled.View`
-  flex: 2;
+  flex: 1;
+  align-items: center;
 `;
 
 export const FormInput = styled.View`
@@ -23,7 +24,7 @@ export const LoginFooter = styled.View`
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 20px;
-  flex: 1;
+  height: 30px;
 `;
 
 export const LoginInput = styled(Input).attrs(({theme}) => ({

@@ -101,6 +101,11 @@ export const TouchableItem = styled(TouchableOpacity)`
   width: 75;
 `;
 
+export const CustomListItem = styled(ListItem)`
+  border-bottom-color: ${({theme}) => theme.colors.grey5};
+  border-bottom-width: 1;
+`;
+
 export const DocumentInfoItem = styled(ListItem).attrs(({theme}) => ({
   friction: 90,
   tension: 100,
