@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {SearchBar, Header} from 'react-native-elements';
-import {View} from 'react-native';
+import {Text} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -15,6 +15,8 @@ import {
   InputWrapper,
   ScrollView,
   ItemsCounter,
+  CheckedIcon,
+  CheckIconWrapper,
 } from './ProductSelectorScreen.styled';
 import PriceButtons from '../../components/PriceButtons';
 import {GET_PRODUCTS, ADD_ITEM} from '../../graphql/productGraphql';
@@ -94,6 +96,22 @@ const ProductSelectorScreen = props => {
     }
   }, [addItemData && addItemData.addItem.length]);
 
+  const itemAdded = itemCode => {
+    if (!data.document) {
+      return null;
+    }
+    const getItemAdded = data.document.items.find(i => i.code === itemCode);
+
+    if (getItemAdded) {
+      return (
+        <CheckIconWrapper>
+          {getItemAdded.quantity} <CheckedIcon />
+        </CheckIconWrapper>
+      );
+    }
+
+    return null;
+  };
   return (
     <Formik
       initialValues={{quantity: '1', price: ''}}
@@ -124,9 +142,20 @@ const ProductSelectorScreen = props => {
             {data &&
               data.products.map((item, i) => (
                 <ListItem
+                  leftAvatar={{
+                    source: {
+                      uri:
+                        'https://cdn.shopify.com/s/files/1/0108/9716/2321/products/AAA1516_1_1000x1000_crop_center@2x.jpg',
+                    },
+                  }}
+                  rightTitle={itemAdded(item.code)}
                   rightSubtitle={
                     <Currency
-                      value={item.price.find(f => f.name === 'General').price}
+                      value={
+                        item.price.find(
+                          f => f.name && f.name.toLowerCase() === 'general',
+                        ).price
+                      }
                     />
                   }
                   isSelected={item.code === (itemSelected && itemSelected.code)}

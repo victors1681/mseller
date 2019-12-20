@@ -35,6 +35,12 @@ export const GET_PRODUCTS = gql`
         initialQuantity
       }
     }
+    document @client {
+      items {
+        code
+        quantity
+      }
+    }
   }
 `;
 

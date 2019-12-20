@@ -41,6 +41,7 @@ const theme = {
     dark,
     orange: '#ef5602',
     error: '#FF6961',
+    success: '#4BB543',
     white: '#ffffff',
   },
   font: {

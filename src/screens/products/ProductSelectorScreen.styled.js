@@ -5,6 +5,7 @@ import {
   Button,
   Badge,
 } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   KeyboardAvoidingView as KAV,
   ScrollView as ScrollViewNative,
@@ -91,3 +92,14 @@ export const ItemsCounter = styled(Badge).attrs(({theme}) => ({
   containerStyle: {marginRight: 5},
   textStyle: {fontSize: theme.font.size.verySmall},
 }))``;
+
+export const CheckedIcon = styled(Icon).attrs(({theme}) => ({
+  name: 'check-circle',
+  size: 13,
+  color: theme.colors.success,
+}))``;
+
+export const CheckIconWrapper = styled.Text`
+  flex-direction: column;
+  font-size: ${({theme}) => theme.font.size.small};
+`;

@@ -22,11 +22,13 @@ const documentResolvers = {
       const {document} = cache.readQuery({
         query: GET_CURRENT_DOCUMENT,
       });
+      // if the item exist remove it and insert the new one
+      const items = document.items.filter(i => i.code !== item.code);
 
-      const {total, totalTax} = updateTotals([...document.items, item]);
+      const {total, totalTax} = updateTotals([...items, item]);
       const doc = {
         ...document,
-        items: [...document.items, item],
+        items: [...items, item],
         total,
         totalTax,
       };
