@@ -162,7 +162,6 @@ const ProductSelectorScreen = props => {
                   onPress={handleItemSelected(item, setFieldValue)}
                   key={i}
                   title={`${item.code} - ${item.description}`}
-                  subtitle={`${item.code} -`}
                   bottomDivider
                 />
               ))}

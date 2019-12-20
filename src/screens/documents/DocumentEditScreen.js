@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import {Button} from 'react-native-elements';
-import {ActivityIndicator, Text} from 'react-native';
+import {ActivityIndicator, Text, ScrollView} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
-import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
-import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
+import TouchableScale from 'react-native-touchable-scale';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Currency from '../../common/Currency';
 import {GET_CURRENT_DOCUMENT} from '../../graphql/documentGraphql';
@@ -25,6 +24,9 @@ import {
   DocumentInfoItem,
   ClientInfoItem,
   CustomListItem,
+  ObservationInput,
+  ItemListFooterWrapper,
+  AnnotationInput,
 } from './DocumentEditScreen.styled';
 
 const renderListItems = ({item}, rowMap) => {
@@ -32,7 +34,6 @@ const renderListItems = ({item}, rowMap) => {
     <CustomListItem
       onPress={() => console.log('pressed')}
       title={`${item.code} - ${item.description}`}
-      subtitle={`${item.quantity} -`}
       rightTitle={
         <Currency value={item.price} suffix={`${item.quantity} x `} />
       }
@@ -66,7 +67,7 @@ const DocumentEditScreen = ({navigation}) => {
         title={
           client
             ? `${client && client.code} - ${client && client.name}`
-            : 'Select a Client'
+            : 'Add client'
         }
         subtitle={client && client.identification}
         onPress={() =>
@@ -79,7 +80,6 @@ const DocumentEditScreen = ({navigation}) => {
         onPress={() =>
           navigation.navigate('ProductSelector', {itemsTotal: items.length})}
       />
-
       <SwipeListView
         closeOnScroll
         disableRightSwipe
@@ -96,15 +96,20 @@ const DocumentEditScreen = ({navigation}) => {
                 removeItem({
                   variables: {itemId: item.code},
                 });
-
-                console.log('rowwwwww', rowMap, item.code, item.key);
               }}>
               <DeleteIcon />
             </TouchableItem>
           </ActionWrapper>
         )}
         rightOpenValue={-75}
+        ListFooterComponent={
+          <ItemListFooterWrapper>
+            <ObservationInput placeholder="Observations" />
+            <AnnotationInput placeholder="Annotation (Internal no visible to the client)" />
+          </ItemListFooterWrapper>
+        }
       />
+
       <Footer>
         <FooterRow>
           <FooterSubLabel>Discount:</FooterSubLabel>

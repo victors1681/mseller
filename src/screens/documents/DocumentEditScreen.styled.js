@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native';
-import {ListItem} from 'react-native-elements';
+import {ListItem, Input} from 'react-native-elements';
 import Currency from '../../common/Currency';
 
 export const Container = styled.SafeAreaView`
@@ -19,7 +19,7 @@ export const SaveIcon = styled(Icon).attrs(({theme}) => ({
 
 export const ClientIcon = styled(Icon).attrs(({theme}) => ({
   name: 'account-tie',
-  size: 30,
+  size: 25,
   color: theme.colors.grey2,
 }))`
   margin-right: 10px;
@@ -126,5 +126,49 @@ export const ClientInfoItem = styled(ListItem).attrs(({theme}) => ({
   },
   subtitleStyle: {color: theme.colors.grey3, fontSize: theme.font.size.regular},
   chevron: {color: theme.colors.primary},
-  containerStyle: {margin: 10},
+  containerStyle: {marginTop: 10},
+}))``;
+
+export const ItemListFooterWrapper = styled.View`
+  margin-top: 30px;
+`;
+export const ObservationInput = styled(Input).attrs(({theme}) => ({
+  multiline: true,
+  numberOfLines: 2,
+  inputStyle: {
+    fontSize: theme.font.size.regular,
+  },
+  containerStyle: {
+    paddingHorizontal: 0,
+  },
+  inputContainerStyle: {
+    margin: 0,
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingLeft: 6,
+    borderColor: theme.colors.grey5,
+    backgroundColor: theme.colors.white,
+  },
+}))``;
+export const AnnotationInput = styled(Input).attrs(({theme}) => ({
+  multiline: true,
+  numberOfLines: 2,
+  inputStyle: {
+    fontSize: theme.font.size.regular,
+  },
+  containerStyle: {
+    paddingHorizontal: 0,
+    paddingTop: 15,
+  },
+  inputContainerStyle: {
+    margin: 0,
+    paddingTop: 5,
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingLeft: 6,
+    borderColor: theme.colors.grey5,
+    backgroundColor: theme.colors.white,
+  },
 }))``;

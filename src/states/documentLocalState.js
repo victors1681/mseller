@@ -8,16 +8,7 @@ export const documentLocalState = {
   termsConditions: '30%',
   documentType: 'order',
   client: null,
-  retentions: [
-    {
-      __typename: 3,
-      id: 'sss',
-      name: 'Sobre la renta',
-      percentage: 20.0,
-      description: 'testing retention',
-      type: 'Fuente',
-    },
-  ],
+  retentions: [],
   currency: {
     id: '002',
     code: 'USD',
