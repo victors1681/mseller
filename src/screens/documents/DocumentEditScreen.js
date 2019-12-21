@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Button} from 'react-native-elements';
-import {ActivityIndicator, Text, ScrollView} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import TouchableScale from 'react-native-touchable-scale';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
@@ -27,6 +27,7 @@ import {
   ObservationInput,
   ItemListFooterWrapper,
   AnnotationInput,
+  KeyboardAvoidingView,
 } from './DocumentEditScreen.styled';
 
 const renderListItems = ({item}, rowMap) => {
@@ -55,76 +56,75 @@ const DocumentEditScreen = ({navigation}) => {
   const {client, items, total, totalTax} = data && data.document;
 
   return (
-    <Container>
-      <DocumentInfoItem
-        Component={TouchableScale}
-        title="No. 992-0992"
-        subtitle="Order"
-      />
-      <ClientInfoItem
-        Component={TouchableScale}
-        leftAvatar={<ClientIcon />}
-        title={
-          client
-            ? `${client && client.code} - ${client && client.name}`
-            : 'Add client'
-        }
-        subtitle={client && client.identification}
-        onPress={() =>
-          navigation.navigate('ClientSelector', {pickupClient: true})}
-      />
-      <Button
-        type="clear"
-        icon={<AddIcon />}
-        title="Add Items"
-        onPress={() =>
-          navigation.navigate('ProductSelector', {itemsTotal: items.length})}
-      />
-      <SwipeListView
-        closeOnScroll
-        disableRightSwipe
-        closeOnRowOpen
-        closeOnRowBeginSwipe
-        data={items}
-        keyExtractor={item => item.code}
-        renderItem={renderListItems}
-        renderHiddenItem={({item}, rowMap) => (
-          <ActionWrapper>
-            <Text>Remove</Text>
-            <TouchableItem
-              onPress={() => {
-                removeItem({
-                  variables: {itemId: item.code},
-                });
-              }}>
-              <DeleteIcon />
-            </TouchableItem>
-          </ActionWrapper>
-        )}
-        rightOpenValue={-75}
-        ListFooterComponent={
-          <ItemListFooterWrapper>
-            <ObservationInput placeholder="Observations" />
-            <AnnotationInput placeholder="Annotation (Internal no visible to the client)" />
-          </ItemListFooterWrapper>
-        }
-      />
+    <KeyboardAvoidingView behavior="padding">
+      <Container>
+        <DocumentInfoItem
+          Component={TouchableScale}
+          title="No. 992-0992"
+          subtitle="Order"
+        />
+        <ClientInfoItem
+          Component={TouchableScale}
+          leftAvatar={<ClientIcon />}
+          title={
+            client
+              ? `${client && client.code} - ${client && client.name}`
+              : 'Add client'
+          }
+          subtitle={client && client.identification}
+          onPress={() =>
+            navigation.navigate('ClientSelector', {pickupClient: true})}
+        />
+        <Button
+          type="clear"
+          icon={<AddIcon />}
+          title="Add Items"
+          onPress={() =>
+            navigation.navigate('ProductSelector', {itemsTotal: items.length})}
+        />
 
-      <Footer>
-        <FooterRow>
-          <FooterSubLabel>Discount:</FooterSubLabel>
-          <FooterSubValue value={(0).toString()} />
-        </FooterRow>
-        <FooterRow>
-          <FooterSubLabel>Tax:</FooterSubLabel>
-          <FooterSubValue value={totalTax && totalTax.toString()} />
-        </FooterRow>
-        <FooterRow>
-          <FooterTotalLabel>Total:</FooterTotalLabel>
-          <FooterTotalValue value={total && total.toString()} />
-        </FooterRow>
-      </Footer>
-    </Container>
+        <SwipeListView
+          data={items}
+          keyExtractor={item => item.code}
+          renderItem={renderListItems}
+          renderHiddenItem={({item}, rowMap) => (
+            <ActionWrapper>
+              <Text>Remove</Text>
+              <TouchableItem
+                onPress={() => {
+                  removeItem({
+                    variables: {itemId: item.code},
+                  });
+                }}>
+                <DeleteIcon />
+              </TouchableItem>
+            </ActionWrapper>
+          )}
+          rightOpenValue={-75}
+          ListFooterComponent={
+            <ItemListFooterWrapper>
+              <ObservationInput placeholder="Observations" />
+              <AnnotationInput placeholder="Annotation (Internal no visible to the client)" />
+            </ItemListFooterWrapper>
+          }
+        />
+
+        <Footer>
+          <FooterRow>
+            <FooterSubLabel>Discount:</FooterSubLabel>
+            <FooterSubValue value={(0).toString()} />
+          </FooterRow>
+          <FooterRow>
+            <FooterSubLabel>Tax:</FooterSubLabel>
+            <FooterSubValue value={totalTax && totalTax.toString()} />
+          </FooterRow>
+          <FooterRow>
+            <FooterTotalLabel>Total:</FooterTotalLabel>
+            <FooterTotalValue value={total && total.toString()} />
+          </FooterRow>
+        </Footer>
+      </Container>
+    </KeyboardAvoidingView>
   );
 };
 

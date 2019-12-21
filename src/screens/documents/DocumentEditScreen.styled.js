@@ -1,13 +1,28 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, KeyboardAvoidingView as KAV} from 'react-native';
 import {ListItem, Input} from 'react-native-elements';
+import {SwipeListView as SLV} from 'react-native-swipe-list-view';
 import Currency from '../../common/Currency';
+
+export const KeyboardAvoidingView = styled(KAV)`
+  flex: 1;
+`;
 
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${({theme}) => theme.colors.lightGray};
 `;
+
+export const SwipeListView = styled(SLV).attrs({
+  closeOnScroll: true,
+  disableRightSwipe: true,
+  closeOnRowOpen: true,
+  closeOnRowBeginSwipe: true,
+  ListFooterComponentStyle: {
+    paddingButton: 30,
+  },
+})``;
 
 export const SaveIcon = styled(Icon).attrs(({theme}) => ({
   name: 'content-save',
@@ -20,7 +35,7 @@ export const SaveIcon = styled(Icon).attrs(({theme}) => ({
 export const ClientIcon = styled(Icon).attrs(({theme}) => ({
   name: 'account-tie',
   size: 25,
-  color: theme.colors.grey2,
+  color: theme.colors.primary,
 }))`
   margin-right: 10px;
 `;
@@ -120,7 +135,7 @@ export const ClientInfoItem = styled(ListItem).attrs(({theme}) => ({
   tension: 100,
   activeScale: 0.95,
   titleStyle: {
-    color: theme.colors.grey1,
+    color: theme.colors.primary,
     fontSize: theme.font.size.medium,
     fontWeight: 'bold',
   },
