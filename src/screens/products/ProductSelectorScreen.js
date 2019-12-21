@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {SearchBar, Header} from 'react-native-elements';
-import {Text} from 'react-native';
+import {Platform} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -126,7 +126,7 @@ const ProductSelectorScreen = props => {
         touched,
         setFieldValue,
       }) => (
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={30}>
+        <KeyboardAvoidingView>
           <SearchBar
             lightTheme
             round

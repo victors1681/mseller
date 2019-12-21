@@ -9,9 +9,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   KeyboardAvoidingView as KAV,
   ScrollView as ScrollViewNative,
+  Platform,
 } from 'react-native';
 
-export const KeyboardAvoidingView = styled(KAV)`
+export const KeyboardAvoidingView = styled(KAV).attrs({
+  keyboardVerticalOffset: Platform.OS === 'ios' ? 30 : 0,
+  behavior: Platform.OS === 'ios' ? 'padding' : null,
+})`
   flex: 1;
 `;
 export const Container = styled.View`
@@ -36,8 +40,14 @@ export const ListItem = styled(ListItemNative).attrs(({isSelected, theme}) => ({
   },
 }))``;
 
+const getContainerHight = isActive => {
+  if (isActive) {
+    return Platform.OS === 'ios' ? 216 : 160;
+  }
+  return null;
+};
 export const InputSelectionContainer = styled.View`
-  height: ${({isActive}) => (isActive ? 216 : 0)};
+  height: ${({isActive}) => getContainerHight(isActive)};
   opacity: ${({isActive}) => (isActive ? 1 : 0)};
   padding-top: 9px;
 `;
@@ -82,10 +92,11 @@ export const PriceInput = styled(Input).attrs({
 
 export const AddItemButton = styled(Button).attrs({
   title: 'Add Item',
-})`
-  margin: 10px;
-  margin-top: 5px;
-`;
+  containerStyle: {
+    margin: 10,
+    marginTop: 5,
+  },
+})``;
 
 export const ItemsCounter = styled(Badge).attrs(({theme}) => ({
   status: 'primary',

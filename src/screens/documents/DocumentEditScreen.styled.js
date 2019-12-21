@@ -43,7 +43,7 @@ export const ClientIcon = styled(Icon).attrs(({theme}) => ({
 export const Footer = styled.View`
   flex-direction: column;
   background-color: ${({theme}) => theme.colors.dark};
-  height: 110;
+  height: 130;
   margin-bottom: -40px;
   padding-top: 10px;
 `;

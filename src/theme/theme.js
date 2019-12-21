@@ -39,6 +39,7 @@ const theme = {
     primary: '#06c',
     itemSelected: '#C2D7ED',
     dark,
+    darkGray: '#313131',
     orange: '#ef5602',
     error: '#FF6961',
     success: '#4BB543',

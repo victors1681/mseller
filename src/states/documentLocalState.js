@@ -10,12 +10,14 @@ export const documentLocalState = {
   client: null,
   retentions: [],
   currency: {
+    __typename: 'currency',
     id: '002',
     code: 'USD',
     symbol: '$',
     exchangeRate: 54.5,
   },
   seller: {
+    __typename: 'seller',
     code: '0023',
     name: 'Keysy',
     status: true,
@@ -23,6 +25,7 @@ export const documentLocalState = {
     observations: 'testing',
   },
   priceList: {
+    __typename: 'priceList',
     id: '001',
     name: 'Distribuidor',
     status: true,

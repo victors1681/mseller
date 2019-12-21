@@ -14,6 +14,10 @@ import {
   LoginButton,
   LoginInput,
   KeyboardAvoidingView,
+  Logo,
+  Headline,
+  PoweredBy,
+  MsellerLink,
 } from './SignInScreen.styled';
 import Toast from '../components/Toast';
 import {setToken} from '../utils/localStore';
@@ -65,17 +69,18 @@ const SignIn = ({navigation}) => {
       onSubmit={handleLogin}
       validationSchema={LoginValidation}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
-        <KeyboardAvoidingView behavior="padding">
-          <LoginContainer>
+        <LoginContainer>
+          <KeyboardAvoidingView>
             {error && <Toast error={error} />}
             <LoginHeader>
-              <Text>Title</Text>
+              <Logo />
             </LoginHeader>
+
             <FormInput>
               <LoginInput
                 autoCapitalize="none"
                 keyboardType="email-address"
-                placeholder="email@address.com"
+                placeholder="email@domain.com"
                 label="email"
                 leftIcon={
                   <Icon name="account" size={24} color={theme.colors.grey2} />
@@ -106,11 +111,15 @@ const SignIn = ({navigation}) => {
                 loading={loading}
               />
             </FormInput>
+
             <LoginFooter>
-              <Text>Powered by IT Soluclick</Text>
+              <Headline>
+                Made for professional sellers - www.mseller.app
+              </Headline>
+              <PoweredBy>Powered by ITSoluclick</PoweredBy>
             </LoginFooter>
-          </LoginContainer>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </LoginContainer>
       )}
     </Formik>
   );
