@@ -44,7 +44,7 @@ const getContainerHight = isActive => {
   if (isActive) {
     return Platform.OS === 'ios' ? 216 : 160;
   }
-  return null;
+  return 0;
 };
 export const InputSelectionContainer = styled.View`
   height: ${({isActive}) => getContainerHight(isActive)};

@@ -1,5 +1,5 @@
 const dark = '#1d1d1f';
-const lightGray = '#fafafa';
+const lightGray = '#EFF2F5';
 
 const size = {
   verySmall: 10,

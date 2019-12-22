@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {Button, Avatar} from 'react-native-elements';
+import {Title as T} from '../../../common/common.styled';
 
 export const MainContainer = styled.View`
   justify-content: center;
@@ -36,10 +37,6 @@ export const UserName = styled.Text`
   font-size: ${({theme}) => theme.font.size.small};
 `;
 
-export const Title = styled.Text`
+export const Title = styled(T)`
   margin-bottom: 4px;
-  color: ${({theme}) => theme.colors.dark};
-  font-size: ${({theme}) => theme.font.size.regular};
-
-  font-weight: bold;
 `;

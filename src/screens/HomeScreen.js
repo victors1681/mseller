@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text} from 'react-native';
 import Currency from '../common/Currency';
-import {FinanceButton, ChatAvatarList} from '../components/Home';
+import {FinanceButton, ChatAvatarList, WaveChart} from '../components/Home';
 import {
   ScrollView,
   Header,
@@ -18,6 +18,22 @@ import {
   SummaryTitle,
   SummaryValue,
 } from './HomeScreen.styled';
+
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  datasets: [
+    {
+      data: [
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+        Math.random() * 100,
+      ],
+    },
+  ],
+};
 
 export default function HomeScreen() {
   return (
@@ -55,16 +71,9 @@ export default function HomeScreen() {
           action={() => ({})}
         />
       </FinanceBloc>
-
       <ChatAvatarList />
-
-      <SaleGraph>
-        <Text>Graph Sales</Text>
-      </SaleGraph>
-
-      <PaymentGraph>
-        <Text>Payment Graph</Text>
-      </PaymentGraph>
+      <WaveChart title="Sales" data={data} />
+      <WaveChart title="Payments" data={data} />
     </ScrollView>
   );
 }
