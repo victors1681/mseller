@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Platform, StatusBar} from 'react-native';
 import {ThemeProvider, ThemeConsumer} from 'react-native-elements';
 import {ThemeProvider as ThemeProviderStyledComponent} from 'styled-components';
 import styled from 'styled-components/native';
+import SplashScreen from 'react-native-splash-screen';
 
 import 'intl';
 // in order to make the intl works on android I had to add
@@ -29,6 +30,9 @@ const AppContainer = styled.View`
 `;
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <ThemeProvider theme={customTheme}>
       <ThemeConsumer>

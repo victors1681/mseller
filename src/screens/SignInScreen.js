@@ -101,6 +101,7 @@ const SignIn = ({navigation}) => {
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 value={values.password}
+                onSubmitEditing={handleSubmit}
                 errorMessage={
                   errors.password && touched.password && errors.password
                 }

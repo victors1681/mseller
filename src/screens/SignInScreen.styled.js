@@ -72,6 +72,10 @@ export const Headline = styled.Text`
   color: ${({theme}) => theme.colors.darkGray};
   font-size: ${({theme}) => theme.font.size.regular};
 `;
+export const MsellerLink = styled.Text`
+  color: ${({theme}) => theme.colors.darkGray};
+  font-size: ${({theme}) => theme.font.size.regular};
+`;
 
 export const Logo = styled.Image.attrs({
   source: msellerLogo,
