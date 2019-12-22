@@ -12,10 +12,6 @@ import {
 } from 'react-native';
 import Currency from '../common/Currency';
 
-export const MainContainer = styled.View`
-  flex: 1;
-`;
-
 export const ScrollView = styled.ScrollView`
   flex: 1;
   flex-direction: column;
@@ -38,6 +34,12 @@ export const ProfileAvatar = styled(Avatar).attrs(({theme}) => ({
 }))`
   height: 100px;
   width: 100px;
+`;
+
+export const FinanceBloc = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const SummaryWrapper = styled.View`
@@ -70,66 +72,6 @@ export const ProfileName = styled.Text`
 export const CompanyName = styled.Text`
   font-size: ${({theme}) => theme.font.size.small};
   color: ${({theme}) => theme.colors.dark};
-`;
-
-export const FinanceBloc = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const FinanceBtn = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  margin: 20px;
-`;
-
-export const FinanceBtnChevron = styled(Icon).attrs(
-  ({theme, chevronOrientation}) => ({
-    name: chevronOrientation === 'left' ? 'chevron-left' : 'chevron-right',
-    color: theme.colors.primary,
-    size: 15,
-  }),
-)`
-  flex-direction: row;
-  margin: 8px;
-`;
-
-export const FinanceBtnContentWrapper = styled.View`
-  margin-bottom: 4px;
-  color: ${({theme}) => theme.colors.titleGray};
-  font-size: ${({theme}) => theme.font.size.small};
-  justify-content: flex-start;
-  font-weight: bold;
-`;
-
-export const FinanceBtnTitle = styled.Text`
-  margin-bottom: 4px;
-  color: ${({theme}) => theme.colors.titleGray};
-  font-size: ${({theme}) => theme.font.size.small};
-  justify-content: flex-start;
-  font-weight: bold;
-`;
-
-export const FinanceBtnValue = styled(Currency)`
-  color: ${({theme, highlight}) =>
-    highlight ? theme.colors.error : theme.colors.primary};
-  font-size: ${({theme}) => theme.font.size.large};
-  justify-content: flex-start;
-  margin-bottom: 2px;
-  align-items: flex-start;
-`;
-
-export const Finance = {
-  FinanceBtn,
-  FinanceBtnChevron,
-  FinanceBtnContentWrapper,
-  FinanceBtnTitle,
-  FinanceBtnValue,
-};
-export const TeamBloc = styled.View`
-  height: 150px;
-  background-color: green;
 `;
 
 export const SaleGraph = styled.View`

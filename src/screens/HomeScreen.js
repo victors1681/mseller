@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text} from 'react-native';
 import Currency from '../common/Currency';
+import {FinanceButton, ChatAvatarList} from '../components/Home';
 import {
-  MainContainer,
   ScrollView,
   Header,
   FinanceBloc,
@@ -17,33 +17,10 @@ import {
   SummaryWrapper,
   SummaryTitle,
   SummaryValue,
-  Finance,
 } from './HomeScreen.styled';
-
-const FinanceButton = ({
-  title,
-  value,
-  action,
-  chevronOrientation = 'left',
-  highlight = false,
-}) => (
-  <Finance.FinanceBtn onPress={action}>
-    {chevronOrientation === 'left' && (
-      <Finance.FinanceBtnChevron chevronOrientation="left" />
-    )}
-    <Finance.FinanceBtnContentWrapper>
-      <Finance.FinanceBtnValue highlight={highlight} value={value} />
-      <Finance.FinanceBtnTitle>{title}</Finance.FinanceBtnTitle>
-    </Finance.FinanceBtnContentWrapper>
-    {chevronOrientation === 'right' && (
-      <Finance.FinanceBtnChevron chevronOrientation="right" />
-    )}
-  </Finance.FinanceBtn>
-);
 
 export default function HomeScreen() {
   return (
-    // <MainContainer>
     <ScrollView>
       <Header>
         <ProfileWrapper>
@@ -63,7 +40,6 @@ export default function HomeScreen() {
           <SummaryTitle> Payments</SummaryTitle>
           <SummaryValue value={23000.33} />
         </SummaryWrapper>
-        <Text>Header</Text>
       </Header>
       <FinanceBloc>
         <FinanceButton
@@ -79,9 +55,8 @@ export default function HomeScreen() {
           action={() => ({})}
         />
       </FinanceBloc>
-      <TeamBloc>
-        <Text>Team</Text>
-      </TeamBloc>
+
+      <ChatAvatarList />
 
       <SaleGraph>
         <Text>Graph Sales</Text>
@@ -91,7 +66,6 @@ export default function HomeScreen() {
         <Text>Payment Graph</Text>
       </PaymentGraph>
     </ScrollView>
-    // </MainContainer>
   );
 }
 
