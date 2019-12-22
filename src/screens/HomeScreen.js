@@ -80,5 +80,9 @@ export default function HomeScreen() {
 
 HomeScreen.navigationOptions = ({navigation}) => ({
   title: 'Home',
+  headerStyle: {
+    shadowColor: 'transparent',
+    borderBottomWidth: 0,
+  },
   headerRight: <NotificationIcon value={navigation.getParam('itemsTotal')} />,
 });

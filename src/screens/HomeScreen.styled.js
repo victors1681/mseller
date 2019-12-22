@@ -85,6 +85,7 @@ export const PaymentGraph = styled.View`
 export const NotificationIcon = styled(Icon).attrs(({theme}) => ({
   name: 'bell',
   size: 18,
-  containerStyle: {marginRight: 10},
   color: theme.colors.grey4,
-}))``;
+}))`
+  margin-right: 15px;
+`;
