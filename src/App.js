@@ -42,7 +42,9 @@ const App = () => {
               <IntlProvider locale="en-US" messages={translation.es}>
                 <CurrencyProvider>
                   <AppContainer>
-                    {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                    {Platform.OS === 'ios' && (
+                      <StatusBar barStyle="dark-content" />
+                    )}
                     <AppNavigator />
                   </AppContainer>
                 </CurrencyProvider>
