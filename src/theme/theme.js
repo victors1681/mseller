@@ -36,6 +36,7 @@ const theme = {
   },
   colors: {
     lightGray,
+    titleGray: '#C0C0C0',
     primary: '#0055B3',
     secondary: '#0C0B2A',
     itemSelected: '#C2D7ED',
