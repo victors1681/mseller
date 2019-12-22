@@ -11,6 +11,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ClientScreen from '../screens/clients/ClientScreen';
 import DocumentsHomeScreen from '../screens/documents/DocumentsHomeScreen';
 import DocumentEditScreen from '../screens/documents/DocumentEditScreen';
+import {ChatHomeScreen, ChatScreen, ChatUserList} from '../screens/chat';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -91,11 +92,29 @@ ProductsStack.navigationOptions = {
 
 ProductsStack.path = '';
 
+const ChatStack = createStackNavigator(
+  {
+    ChatHome: ChatHomeScreen,
+    ChatRoom: ChatScreen,
+    NewChatRoom: ChatUserList,
+  },
+  config,
+);
+
+ChatStack.navigationOptions = {
+  title: 'Chat',
+  tabBarLabel: 'Chat',
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name="forum" />,
+};
+
+ProductsStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   DocumentsStack,
   ClientsStack,
   ProductsStack,
+  ChatStack,
 });
 
 tabNavigator.path = '';

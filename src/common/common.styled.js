@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Currency from './Currency';
 
 export const Title = styled.Text`
@@ -8,4 +9,20 @@ export const Title = styled.Text`
   letter-spacing: 2px;
   justify-content: flex-start;
   font-weight: bold;
+`;
+
+export const AddIcon = styled(Icon).attrs(({theme}) => ({
+  name: 'plus',
+  size: 26,
+  color: theme.colors.primary,
+}))`
+  margin-right: 10px;
+`;
+
+export const BackIcon = styled(Icon).attrs(({theme}) => ({
+  name: 'chevron-left',
+  size: 30,
+  color: theme.colors.primary,
+}))`
+  margin-left: 10px;
 `;
