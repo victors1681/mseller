@@ -28,8 +28,8 @@ const ChatScreen = ({navigation}) => {
   const [messages, setMessages] = useState([]);
 
   const {data: initialData, loading, refetch} = useQuery(GET_CHAT_MESSAGES);
-  const {data, error} = useSubscription(MESSAGE_SUBSCRIPTION);
-  const dataSubscription = null;
+  const {data: dataSubscription, error} = useSubscription(MESSAGE_SUBSCRIPTION);
+
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
 
   const toUser = navigation.getParam('toUser');
@@ -44,7 +44,6 @@ const ChatScreen = ({navigation}) => {
     }
   }, [initialData && initialData.messages]);
 
-  console.log('DATA SUBSCRIPTION!!!', data, error);
   // Update from the subscription
   useEffect(() => {
     if (dataSubscription) {
