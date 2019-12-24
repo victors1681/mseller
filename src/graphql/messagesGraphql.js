@@ -34,7 +34,21 @@ export const GET_CHAT_MESSAGES = gql`
 export const MESSAGE_SUBSCRIPTION = gql`
   subscription {
     newMessageAdded {
-      ...Message
+      _id
+      text
+      type
+      user {
+        _id
+        name
+        avatar
+      }
+      image
+      video
+      location
+      status
+      readDate
+      receivedDate
+      createdAt
     }
   }
   ${messageFragments.message}

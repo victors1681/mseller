@@ -27,14 +27,12 @@ const useNavigationHeader = () => {
 const ChatScreen = ({navigation}) => {
   const [messages, setMessages] = useState([]);
 
-  const {data: initialData, loading, error, refetch} = useQuery(
-    GET_CHAT_MESSAGES,
-  );
-  const {data: dataSubscription} = useSubscription(MESSAGE_SUBSCRIPTION);
+  const {data: initialData, loading, refetch} = useQuery(GET_CHAT_MESSAGES);
+  const {data, error} = useSubscription(MESSAGE_SUBSCRIPTION);
+  const dataSubscription = null;
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
 
-  const receiverUserInfo =
-    {_id: '5dfff5f9c50aec7a8635a802'} || navigation.getParam('userInfo');
+  const toUser = navigation.getParam('toUser');
 
   const {userInfo, userId} = useUserInfo();
 
@@ -46,12 +44,17 @@ const ChatScreen = ({navigation}) => {
     }
   }, [initialData && initialData.messages]);
 
+  console.log('DATA SUBSCRIPTION!!!', data, error);
   // Update from the subscription
   useEffect(() => {
     if (dataSubscription) {
       setMessages([dataSubscription.newMessageAdded, ...messages]);
     }
-  }, [dataSubscription && dataSubscription._id]);
+  }, [
+    dataSubscription &&
+      dataSubscription.newMessageAdded &&
+      dataSubscription.newMessageAdded._id,
+  ]);
 
   const onSend = (newMessages = []) => {
     console.log('msgsmsgs', newMessages);
@@ -60,7 +63,7 @@ const ChatScreen = ({navigation}) => {
       text,
     } = newMessages[0];
     const currentMessage = {
-      to: receiverUserInfo._id,
+      to: toUser._id,
       from: _id,
       type: 'TEXT',
       text,
