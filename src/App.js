@@ -17,6 +17,7 @@ import translation from './common/i18n/translation';
 
 import customTheme from './theme';
 import ApolloConfig from './ApolloConfig';
+import {UserProvider} from './context/userContext';
 
 import AppNavigator from './navigation/AppNavigator';
 
@@ -45,7 +46,9 @@ const App = () => {
                     {Platform.OS === 'ios' && (
                       <StatusBar barStyle="dark-content" />
                     )}
-                    <AppNavigator />
+                    <UserProvider>
+                      <AppNavigator />
+                    </UserProvider>
                   </AppContainer>
                 </CurrencyProvider>
               </IntlProvider>

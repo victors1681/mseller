@@ -59,7 +59,8 @@ module.exports = {
        "react/jsx-uses-vars": "error", 
        "react-native/no-raw-text": "off",
        "react/jsx-closing-bracket-location": "off",
-       "react/no-array-index-key": "off"
+       "react/no-array-index-key": "off",
+       "no-underscore-dangle": "off"
     }
   
 };

@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
-import {Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useMutation} from '@apollo/react-hooks';
-import {gql} from 'apollo-boost';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {PERFORM_LOGIN} from '../graphql/signInSGraphql';
+import {UPDATE_CURRENT_USER} from '../graphql/userGraphql';
 import useTheme from '../hooks/useTheme';
+import {useUserInfo} from '../hooks/useUserInfo';
 import {
   LoginContainer,
   LoginHeader,
@@ -17,18 +18,9 @@ import {
   Logo,
   Headline,
   PoweredBy,
-  MsellerLink,
 } from './SignInScreen.styled';
 import Toast from '../components/Toast';
-import {setToken} from '../utils/localStore';
-
-const performLogin = gql`
-  mutation LOGIN($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`;
+import {setToken, setUserId} from '../utils/localStore';
 
 const LoginValidation = Yup.object().shape({
   email: Yup.string()
@@ -38,7 +30,8 @@ const LoginValidation = Yup.object().shape({
 });
 const SignIn = ({navigation}) => {
   const theme = useTheme();
-  const [updateTodo, {data, loading, error}] = useMutation(performLogin, {
+  const {updateUserInfo} = useUserInfo();
+  const [updateTodo, {data, loading, error}] = useMutation(PERFORM_LOGIN, {
     errorPolicy: 'all',
   });
 
@@ -55,7 +48,10 @@ const SignIn = ({navigation}) => {
   useEffect(() => {
     if (data && data.login.token) {
       setToken(data.login.token);
-      navigation.navigate('App');
+      setUserId(data.login._id);
+      updateUserInfo(data.login);
+
+      navigation.navigate('App', {userInfo: data.login});
     }
 
     if (loading) {

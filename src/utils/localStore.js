@@ -25,6 +25,31 @@ export const getToken = async () => {
   return null;
 };
 
+export const setUserId = async userId => {
+  if (!userId) {
+    console.log('invalid userId');
+    return;
+  }
+
+  try {
+    await AsyncStorage.setItem('userId', userId);
+    console.log('userId saved');
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getUserId = async () => {
+  try {
+    const userId = await AsyncStorage.getItem('userId');
+
+    return userId;
+  } catch (e) {
+    console.error(e);
+  }
+  return null;
+};
+
 export const setCurrency = async token => {
   if (!token) {
     console.log('invalid currency');

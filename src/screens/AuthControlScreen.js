@@ -5,7 +5,7 @@ import {getToken} from '../utils/localStore';
 const checkAuth = async navigation => {
   const userToken = await getToken();
   console.log('userTokenuserTokenuserTokenuserToken', userToken, navigation);
-  navigation.navigate(userToken ? 'App' : 'Auth');
+  navigation.navigate(userToken ? 'Auth' : 'Auth');
 };
 const AuthControl = ({navigation}) => {
   useEffect(() => {
