@@ -6,6 +6,7 @@ export const messageFragments = {
       _id
       text
       type
+      chatId
       user {
         _id
         name
@@ -23,8 +24,8 @@ export const messageFragments = {
 };
 
 export const GET_CHAT_MESSAGES = gql`
-  query get_chatMessages {
-    messages {
+  query get_chatMessages($chatId: ID!) {
+    messages(chatId: $chatId) {
       ...Message
     }
   }

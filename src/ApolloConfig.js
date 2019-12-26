@@ -108,7 +108,6 @@ const ApolloConfig = ({children}) => {
     );
 
     const isFile = value => {
-      console.log('VALUEEEE', value);
       return (
         (typeof ReactNativeFile !== 'undefined' &&
           value instanceof ReactNativeFile) ||
@@ -119,6 +118,7 @@ const ApolloConfig = ({children}) => {
     const isUpload = ({variables}) => Object.values(variables).some(isFile);
 
     const isSubscriptionOperation = ({query}) => {
+      console.log('isSubcription : ', query);
       const {kind, operation} = getMainDefinition(query);
       return kind === 'OperationDefinition' && operation === 'subscription';
     };

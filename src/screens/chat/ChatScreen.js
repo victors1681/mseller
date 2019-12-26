@@ -31,23 +31,23 @@ const useNavigationHeader = () => {
 const ChatScreen = ({navigation}) => {
   useNavigationHeader();
   const toUser = navigation.getParam('toUser');
+  const chatId = navigation.getParam('chatId');
 
   const [messages, setMessages] = useState([]);
   const {userInfo, userId, getFullUserName} = useUserInfo();
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
-  const {data: initialData, loading, refetch} = useQuery(GET_CHAT_MESSAGES);
-  const {data: dataSubscription, error} = useSubscription(
-    MESSAGE_SUBSCRIPTION,
-    {
-      variables: {
-        userId, // current user
-        listenForUserId: toUser._id, // against user
-      },
+  const {data: initialData, loading, error} = useQuery(GET_CHAT_MESSAGES, {
+    variables: {
+      chatId,
     },
-  );
-  console.log('initialData', initialData, dataSubscription);
+  });
 
-  console.log('toUsertoUser', toUser);
+  const {data: dataSubscription} = useSubscription(MESSAGE_SUBSCRIPTION, {
+    variables: {
+      userId, // current user
+      listenForUserId: toUser._id, // against user
+    },
+  });
 
   useEffect(() => {
     if (initialData) {
@@ -67,12 +67,12 @@ const ChatScreen = ({navigation}) => {
   ]);
 
   const onSend = (newMessages = []) => {
-    console.log('msgsmsgs', newMessages);
     const {
       user: {_id},
       text,
     } = newMessages[0];
     const currentMessage = {
+      chatId,
       to: toUser._id,
       from: _id,
       type: 'TEXT',

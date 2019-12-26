@@ -55,7 +55,6 @@ const renderItem = (navigation, userId) => ({item}) => {
   console.log('itemitem', item, userId);
   const {fromUser, toUser} = findReceptorAndEmitterFullObj(item, userId);
 
-  console.log('USERRR', item);
   const avatar = toUser.avatar
     ? {
         source: {
@@ -78,7 +77,8 @@ const renderItem = (navigation, userId) => ({item}) => {
       }
       bottomDivider
       chevron
-      onPress={() => navigation.navigate('ChatRoom', {toUser})}
+      onPress={() =>
+        navigation.navigate('ChatRoom', {toUser, chatId: item._id})}
     />
   );
 };
