@@ -7,6 +7,7 @@ import {ApolloClient} from 'apollo-client';
 import {onError} from 'apollo-link-error';
 import {withClientState} from 'apollo-link-state';
 import {ApolloLink, Observable, split} from 'apollo-link';
+import {createHttpLink} from 'apollo-link-http';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import {InMemoryCache} from 'apollo-cache-inmemory';
@@ -20,6 +21,7 @@ import {ReactNativeFile} from 'apollo-upload-client';
 import {rootState} from './states/rootState';
 import {useUserInfo} from './hooks/useUserInfo';
 import {getToken, setToken} from './utils/localStore';
+import resolvers from './resolvers';
 
 const {createUploadLink} = require('apollo-upload-client');
 
@@ -30,6 +32,22 @@ const ApolloConfig = ({children}) => {
   console.log('userInfouserInfo', userInfo);
 
   useEffect(() => {
+    const httpLink = createHttpLink({
+      uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,
+    });
+    const middlewareLink = new ApolloLink((operation, forward) => {
+      operation.setContext({
+        headers: {
+          'X-REQUEST-TYPE': 'HTTP',
+          authorization: `Bearer ${userInfo.token}` || '',
+        },
+      });
+      return forward(operation);
+    });
+
+    // use with apollo-client
+    const httpCustomlink = middlewareLink.concat(httpLink);
+
     const wsLink = new WebSocketLink({
       uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,
       options: {
@@ -89,10 +107,14 @@ const ApolloConfig = ({children}) => {
         }),
     );
 
-    const isFile = value =>
-      (typeof ReactNativeFile !== 'undefined' &&
-        value instanceof ReactNativeFile) ||
-      (typeof Blob !== 'undefined' && value instanceof Blob);
+    const isFile = value => {
+      console.log('VALUEEEE', value);
+      return (
+        (typeof ReactNativeFile !== 'undefined' &&
+          value instanceof ReactNativeFile) ||
+        (typeof Blob !== 'undefined' && value instanceof Blob)
+      );
+    };
 
     const isUpload = ({variables}) => Object.values(variables).some(isFile);
 
@@ -101,12 +123,17 @@ const ApolloConfig = ({children}) => {
       return kind === 'OperationDefinition' && operation === 'subscription';
     };
 
-    const requestLink2 = split(isSubscriptionOperation, requestLink, wsLink);
+    const requestLink2 = split(isSubscriptionOperation, wsLink, httpCustomlink);
 
     const terminalLink = split(isUpload, uploadLink, requestLink2);
 
     const client = new ApolloClient({
       link: terminalLink,
+      resolvers: {
+        Mutation: {
+          ...resolvers.Mutation,
+        },
+      },
       cache,
     });
 
