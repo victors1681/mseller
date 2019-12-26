@@ -38,3 +38,9 @@ export const UPDATE_CURRENT_USER = gql`
     updateCurrentUser(user: $user) @client
   }
 `;
+
+export const UPDATE_USER_AVATAR = gql`
+  mutation UpdateUserAvatar($file: Upload!, $userId: ID) {
+    uploadUserAvatar(file: $file, userId: $userId)
+  }
+`;

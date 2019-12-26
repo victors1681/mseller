@@ -20,21 +20,6 @@ import {
 } from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
 
-const list = [
-  {
-    name: 'Amy Farha',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    subtitle: 'Vice President',
-  },
-  {
-    name: 'Chris Jackson',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    subtitle: 'Vice Chairman',
-  },
-];
-
 const findReceptorAndEmitter = ({from, to}, userId) => ({
   from: userId === from ? to : from,
   to: userId === to ? from : to,
@@ -70,6 +55,7 @@ const renderItem = (navigation, userId) => ({item}) => {
   console.log('itemitem', item, userId);
   const {fromUser, toUser} = findReceptorAndEmitterFullObj(item, userId);
 
+  console.log('USERRR', item);
   const avatar = toUser.avatar
     ? {
         source: {
@@ -83,10 +69,12 @@ const renderItem = (navigation, userId) => ({item}) => {
       subtitle={item.lastMessage || ''}
       leftAvatar={avatar}
       leftElement={
-        <RenderEmptyAvatar
-          firstName={toUser.firstName}
-          lastName={toUser.lastName}
-        />
+        !avatar && (
+          <RenderEmptyAvatar
+            firstName={toUser.firstName}
+            lastName={toUser.lastName}
+          />
+        )
       }
       bottomDivider
       chevron

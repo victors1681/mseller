@@ -28,13 +28,6 @@ export const ProfileWrapper = styled.View`
   justify-content: center;
   align-items: center;
 `;
-export const ProfileAvatar = styled(Avatar).attrs(({theme}) => ({
-  rounded: true,
-  size: 'xlarge',
-}))`
-  height: 100px;
-  width: 100px;
-`;
 
 export const FinanceBloc = styled.View`
   flex-direction: row;

@@ -39,20 +39,21 @@ const App = () => {
       <ThemeConsumer>
         {({theme}) => (
           <ThemeProviderStyledComponent theme={theme}>
-            <ApolloConfig>
-              <IntlProvider locale="en-US" messages={translation.es}>
-                <CurrencyProvider>
-                  <AppContainer>
-                    {Platform.OS === 'ios' && (
-                      <StatusBar barStyle="dark-content" />
-                    )}
-                    <UserProvider>
+            <UserProvider>
+              <ApolloConfig>
+                <IntlProvider locale="en-US" messages={translation.es}>
+                  <CurrencyProvider>
+                    <AppContainer>
+                      {Platform.OS === 'ios' && (
+                        <StatusBar barStyle="dark-content" />
+                      )}
+
                       <AppNavigator />
-                    </UserProvider>
-                  </AppContainer>
-                </CurrencyProvider>
-              </IntlProvider>
-            </ApolloConfig>
+                    </AppContainer>
+                  </CurrencyProvider>
+                </IntlProvider>
+              </ApolloConfig>
+            </UserProvider>
           </ThemeProviderStyledComponent>
         )}
       </ThemeConsumer>

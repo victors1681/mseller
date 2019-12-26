@@ -2,6 +2,7 @@ import React from 'react';
 import {Text} from 'react-native';
 import Currency from '../common/Currency';
 import {FinanceButton, ChatAvatarList, WaveChart} from '../components/Home';
+import AvatarImage from '../components/AvatarImage';
 import {
   ScrollView,
   Header,
@@ -18,6 +19,7 @@ import {
   SummaryTitle,
   SummaryValue,
 } from './HomeScreen.styled';
+import {useUserInfo} from '../hooks/useUserInfo';
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -36,19 +38,14 @@ const data = {
 };
 
 export default function HomeScreen() {
+  const {getFullUserName, getCompanyName} = useUserInfo();
   return (
     <ScrollView>
       <Header>
         <ProfileWrapper>
-          <ProfileAvatar
-            source={{
-              uri:
-                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-            }}
-            title="MT"
-          />
-          <ProfileName>Victor Santos</ProfileName>
-          <CompanyName>IT Soluclick</CompanyName>
+          <AvatarImage />
+          <ProfileName>{getFullUserName()}</ProfileName>
+          <CompanyName>{getCompanyName()}</CompanyName>
         </ProfileWrapper>
         <SummaryWrapper>
           <SummaryTitle> Sales</SummaryTitle>

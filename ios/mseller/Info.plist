@@ -37,6 +37,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>MSeller requires camera access to your library</string>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>MSeller requires access to the photo library.</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>MSeller requires access to the photo library.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>

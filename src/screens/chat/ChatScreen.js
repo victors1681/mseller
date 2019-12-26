@@ -14,6 +14,7 @@ const useNavigationHeader = () => {
   const navigation = useContext(NavigationContext);
   useEffect(() => {
     const fromNewMessage = navigation.getParam('fromNewMessage');
+    const toUser = navigation.getParam('toUser');
     if (fromNewMessage) {
       ChatScreen.navigationOptions = () => ({
         headerLeft: (
@@ -21,6 +22,9 @@ const useNavigationHeader = () => {
         ),
       });
     }
+    ChatScreen.navigationOptions = () => ({
+      title: toUser.name,
+    });
   }, []);
 };
 
@@ -29,13 +33,13 @@ const ChatScreen = ({navigation}) => {
 
   const {data: initialData, loading, refetch} = useQuery(GET_CHAT_MESSAGES);
   const {data: dataSubscription, error} = useSubscription(MESSAGE_SUBSCRIPTION);
-
+  console.log('initialData', initialData, dataSubscription);
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
 
   const toUser = navigation.getParam('toUser');
 
-  const {userInfo, userId} = useUserInfo();
-
+  const {userInfo, userId, getFullUserName} = useUserInfo();
+  console.log('toUsertoUser', toUser);
   useNavigationHeader();
 
   useEffect(() => {
@@ -83,6 +87,8 @@ const ChatScreen = ({navigation}) => {
       isLoadingEarlier={loading}
       user={{
         _id: userId,
+        avatar: userInfo.avatar,
+        name: getFullUserName(),
       }}
     />
   );

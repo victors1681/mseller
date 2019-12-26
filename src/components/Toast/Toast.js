@@ -22,9 +22,10 @@ const Toast = ({message, type = 'error', error}) => {
   if (error && type === 'error') {
     return (
       <Container>
-        {error.graphQLErrors.map(({m}, i) => (
-          <ErrorText key={i}>{m}</ErrorText>
-        ))}
+        {error.graphQLErrors &&
+          error.graphQLErrors.map(({m}, i) => (
+            <ErrorText key={i}>{m}</ErrorText>
+          ))}
       </Container>
     );
   }
