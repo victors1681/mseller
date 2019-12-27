@@ -7,24 +7,27 @@ import {
   ADD_CHAT_MESSAGE,
   MESSAGE_SUBSCRIPTION,
 } from '../../graphql/messagesGraphql';
+import {CHANGE_CHAT_STATUS} from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
 import {BackIcon} from '../../common/common.styled';
 
 const useNavigationHeader = () => {
   const navigation = useContext(NavigationContext);
   useEffect(() => {
-    const fromNewMessage = navigation.getParam('fromNewMessage');
+    const fromNewChat = navigation.getParam('fromNewChat');
     const toUser = navigation.getParam('toUser');
-    if (fromNewMessage) {
+    if (fromNewChat) {
       ChatScreen.navigationOptions = () => ({
+        title: toUser.name || `${toUser.firstName} ${toUser.lastName}`,
         headerLeft: (
           <BackIcon onPress={() => navigation.navigate('ChatHome')} />
         ),
       });
+    } else {
+      ChatScreen.navigationOptions = () => ({
+        title: toUser.name,
+      });
     }
-    ChatScreen.navigationOptions = () => ({
-      title: toUser.name,
-    });
   }, []);
 };
 
@@ -32,14 +35,18 @@ const ChatScreen = ({navigation}) => {
   useNavigationHeader();
   const toUser = navigation.getParam('toUser');
   const chatId = navigation.getParam('chatId');
+  const lastMessageUserId = navigation.getParam('lastMessageUserId');
 
   const [messages, setMessages] = useState([]);
   const {userInfo, userId, getFullUserName} = useUserInfo();
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
-  const {data: initialData, loading, error} = useQuery(GET_CHAT_MESSAGES, {
+  const [changeChatStatus] = useMutation(CHANGE_CHAT_STATUS);
+
+  const {data: initialData, loading, refetch} = useQuery(GET_CHAT_MESSAGES, {
     variables: {
       chatId,
     },
+    fetchPolicy: 'network-only',
   });
 
   const {data: dataSubscription} = useSubscription(MESSAGE_SUBSCRIPTION, {
@@ -49,9 +56,16 @@ const ChatScreen = ({navigation}) => {
     },
   });
 
+  const handleChangeReadMessage = () => {
+    if (lastMessageUserId !== userId) {
+      changeChatStatus({variables: {chatId, status: 'READ'}});
+    }
+  };
+
   useEffect(() => {
     if (initialData) {
       setMessages([...messages, ...initialData.messages]);
+      handleChangeReadMessage();
     }
   }, [initialData && initialData.messages]);
 
@@ -65,6 +79,17 @@ const ChatScreen = ({navigation}) => {
       dataSubscription.newMessageAdded &&
       dataSubscription.newMessageAdded._id,
   ]);
+
+  // Make all messages read from the current user
+  useEffect(() => {
+    const willFocus = navigation.addListener('willFocus', () => {
+      handleChangeReadMessage();
+      if (refetch) {
+        refetch();
+      }
+    });
+    return () => willFocus.remove();
+  }, [refetch, lastMessageUserId, userId]);
 
   const onSend = (newMessages = []) => {
     const {

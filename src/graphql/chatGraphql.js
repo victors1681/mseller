@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import {UserBasicInfoFragments} from './userGraphql';
 
 export const chatFragments = {
   chat: gql`
@@ -25,7 +26,9 @@ export const chatFragments = {
       image
       type
       name
+      lastMessageUserId
       lastMessage
+      lastMessageStatus
       status
     }
   `,
@@ -40,17 +43,22 @@ export const GET_CHAT_MESSAGES = gql`
   ${chatFragments.chat}
 `;
 
-// export const CHAT_SUBSCRIPTION = gql`
-//   subscription {
-//     newChatAdded {
-//       ...Chat
-//     }
-//   }
-//   ${chatFragments.chat}
-// `;
+export const GET_BUSINESS_CHAT_USERS = gql`
+  query usersChat {
+    usersChat {
+      ...UserBasicInfo
+    }
+  }
+  ${UserBasicInfoFragments.UserBasicInfo}
+`;
 
 export const CREATE_NEW_CHAT_ROOM = gql`
   mutation createChat($chat: ChatInput) {
     createChat(chat: $chat)
+  }
+`;
+export const CHANGE_CHAT_STATUS = gql`
+  mutation changeChatStatus($chatId: ID, $status: String) {
+    changeChatStatus(chatId: $chatId, status: $status)
   }
 `;
