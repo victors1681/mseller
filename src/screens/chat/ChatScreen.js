@@ -82,7 +82,7 @@ const ChatScreen = ({navigation}) => {
 
   // Make all messages read from the current user
   useEffect(() => {
-    const willFocus = navigation.addListener('willFocus', () => {
+    const willFocus = navigation.addListener('didFocus', () => {
       handleChangeReadMessage();
       if (refetch) {
         refetch();

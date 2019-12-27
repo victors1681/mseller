@@ -26,9 +26,12 @@ export const chatFragments = {
       image
       type
       name
-      lastMessageUserId
-      lastMessage
-      lastMessageStatus
+      lastMessage {
+        userId
+        text
+        status
+        date
+      }
       status
     }
   `,

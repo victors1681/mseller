@@ -4,12 +4,14 @@ import {ListItem} from 'react-native-elements';
 import {FlatList, ActivityIndicator} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import styled from 'styled-components';
+import moment from 'moment';
+import {
+  getLastMessageInfo,
+  findReceptorAndEmitterFullObj,
+} from './helper/chatHelper';
 import EmptyAvatarListItem from '../../components/EmptyAvatarListItem';
 import {AddIcon} from '../../common/common.styled';
-import {
-  GET_CHAT_MESSAGES,
-  CREATE_NEW_CHAT_ROOM,
-} from '../../graphql/chatGraphql';
+import {GET_CHAT_MESSAGES} from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
 
 const ChatListItem = styled(ListItem).attrs(({theme, messageStatus}) => ({
@@ -19,22 +21,19 @@ const ChatListItem = styled(ListItem).attrs(({theme, messageStatus}) => ({
     fontWeight: messageStatus === 'UNREAD' ? 'bold' : 'normal',
     fontSize: theme.font.size.regular,
   },
+  rightSubtitleStyle: {
+    fontSize: theme.font.size.small,
+  },
 }))``;
 
-const findReceptorAndEmitter = ({from, to}, userId) => ({
-  from: userId === from ? to : from,
-  to: userId === to ? from : to,
-});
-
-const findReceptorAndEmitterFullObj = ({fromUser, toUser}, userId) => ({
-  fromUser: userId === fromUser._id ? fromUser : toUser,
-  toUser: userId !== toUser._id ? toUser : fromUser,
-});
-
 const renderItem = (navigation, userId) => ({item}) => {
-  console.log('itemitem', item, userId);
-  const {fromUser, toUser} = findReceptorAndEmitterFullObj(item, userId);
-
+  const {toUser} = findReceptorAndEmitterFullObj(item, userId);
+  const {
+    lastMessageUserId,
+    lastMessageText,
+    lastMessageStatus,
+    lastMessageDate,
+  } = getLastMessageInfo(item.lastMessage);
   const avatar = toUser.avatar
     ? {
         source: {
@@ -45,11 +44,10 @@ const renderItem = (navigation, userId) => ({item}) => {
   return (
     <ChatListItem
       title={toUser.name}
-      subtitle={item.lastMessage || ''}
+      subtitle={lastMessageText}
       leftAvatar={avatar}
-      messageStatus={
-        item.lastMessageUserId !== userId && item.lastMessageStatus
-      }
+      rightSubtitle={moment(lastMessageDate).fromNow()}
+      messageStatus={lastMessageUserId !== userId && lastMessageStatus}
       leftElement={
         !avatar && (
           <EmptyAvatarListItem
@@ -63,7 +61,7 @@ const renderItem = (navigation, userId) => ({item}) => {
         navigation.navigate('ChatRoom', {
           toUser,
           chatId: item._id,
-          lastMessageUserId: item.lastMessageUserId,
+          lastMessageUserId,
         })}
     />
   );
@@ -78,7 +76,7 @@ const ChatHomeScreen = ({navigation}) => {
   });
   useEffect(() => {
     const willFocus = navigation.addListener(
-      'willFocus',
+      'didFocus',
       () => refetch && refetch(),
     );
     return () => willFocus.remove();
