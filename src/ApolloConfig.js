@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {AppRegistry, Text} from 'react-native';
-
 import {ApolloProvider} from '@apollo/react-hooks';
 import {getMainDefinition} from 'apollo-utilities';
 import {ApolloClient} from 'apollo-client';
@@ -8,7 +7,6 @@ import {onError} from 'apollo-link-error';
 import {withClientState} from 'apollo-link-state';
 import {ApolloLink, Observable, split} from 'apollo-link';
 import {createHttpLink} from 'apollo-link-http';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {persistCache} from 'apollo-cache-persist';
@@ -18,9 +16,9 @@ import {
 } from 'react-native-dotenv';
 import {WebSocketLink} from 'apollo-link-ws';
 import {ReactNativeFile, createUploadLink} from 'apollo-upload-client';
+import {VERIFY_CACHE_EXIST_INITIAL_LAUNCH} from './graphql/documentGraphql';
 import {rootState} from './states/rootState';
 import {useUserInfo} from './hooks/useUserInfo';
-import {getToken, setToken} from './utils/localStore';
 import resolvers from './resolvers';
 
 const ApolloConfig = ({children}) => {
@@ -104,7 +102,6 @@ const ApolloConfig = ({children}) => {
     );
 
     const isFile = value => {
-      console.log('upload File++++++', value);
       return (
         (typeof ReactNativeFile !== 'undefined' &&
           value instanceof ReactNativeFile) ||
@@ -142,17 +139,26 @@ const ApolloConfig = ({children}) => {
       const initData = {
         ...rootState(),
       };
-      client.writeData({
-        data: initData,
-      });
-      client.onResetStore(async data => {
-        console.log('RESTORINGG>>>>', data);
+
+      try {
+        cache.readQuery({
+          query: VERIFY_CACHE_EXIST_INITIAL_LAUNCH,
+        });
+      } catch (error) {
+        console.log('INIT CACHE>>>>');
+
+        client.writeData({
+          data: initData,
+        });
+      }
+
+      client.onResetStore(async () => {
+        console.log('Resetting Storage>>>>');
         cache.writeData({data: initData});
       });
 
       setClient(client);
     });
-    // }
     return () => {};
   }, [userInfo, userInfo.token]);
 
