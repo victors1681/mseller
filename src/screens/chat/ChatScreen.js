@@ -2,6 +2,10 @@ import React, {useEffect, useState, useContext} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {NavigationContext} from 'react-navigation';
 import {useQuery, useMutation, useSubscription} from '@apollo/react-hooks';
+import call from 'react-native-phone-call';
+import uuid from 'uuid';
+import {InputAction} from '../../components/Chat';
+
 import {
   GET_CHAT_MESSAGES,
   ADD_CHAT_MESSAGE,
@@ -9,8 +13,16 @@ import {
 } from '../../graphql/messagesGraphql';
 import {CHANGE_CHAT_STATUS} from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
-import {BackIcon} from '../../common/common.styled';
+import {BackIcon, HeaderIcon} from '../../common/common.styled';
 
+const callPhoneNumber = phone => {
+  const args = {
+    number: phone, // String value with the number to call
+    prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
+  };
+
+  call(args).catch(console.error);
+};
 const useNavigationHeader = () => {
   const navigation = useContext(NavigationContext);
   useEffect(() => {
@@ -26,6 +38,12 @@ const useNavigationHeader = () => {
     } else {
       ChatScreen.navigationOptions = () => ({
         title: toUser.fullName,
+        headerRight: toUser.phone && (
+          <HeaderIcon
+            name="phone"
+            onPress={() => callPhoneNumber(toUser.phone)}
+          />
+        ),
       });
     }
   }, []);
@@ -38,6 +56,7 @@ const ChatScreen = ({navigation}) => {
   const lastMessageUserId = navigation.getParam('lastMessageUserId');
 
   const [messages, setMessages] = useState([]);
+  // const [image, setImage] = useState(null);
   const {userInfo, userId, getFullUserName} = useUserInfo();
   const [addMessage] = useMutation(ADD_CHAT_MESSAGE);
   const [changeChatStatus] = useMutation(CHANGE_CHAT_STATUS);
@@ -58,6 +77,7 @@ const ChatScreen = ({navigation}) => {
 
   const handleChangeReadMessage = () => {
     if (lastMessageUserId !== userId) {
+      console.log('READDDDDD', chatId);
       changeChatStatus({variables: {chatId, status: 'READ'}});
     }
   };
@@ -91,10 +111,14 @@ const ChatScreen = ({navigation}) => {
     return () => willFocus.remove();
   }, [refetch, lastMessageUserId, userId]);
 
+  const setImageContent = image => {
+    onSend([{text: 'image', user: {_id: userId}, image}]);
+  };
   const onSend = (newMessages = []) => {
     const {
       user: {_id},
       text,
+      image = null,
     } = newMessages[0];
     const currentMessage = {
       chatId,
@@ -103,21 +127,27 @@ const ChatScreen = ({navigation}) => {
       type: 'TEXT',
       text,
       status: 'SENT',
+      image,
     };
     addMessage({
       variables: {
         message: currentMessage,
       },
     });
-    setMessages(GiftedChat.append(messages, newMessages));
+    const alterMessage = [{...newMessages[0], image}];
+    setMessages(GiftedChat.append(messages, alterMessage));
   };
 
   return (
     <GiftedChat
+      renderActions={() => (
+        <InputAction chatId={chatId} contentCallback={setImageContent} />
+      )}
+      onPressAvatar={() => console.log('Avatar pressed')}
+      isLoadingEarlier={loading}
       textInputProps={{autoFocus: true}}
       messages={messages}
       onSend={msgs => onSend(msgs)}
-      isLoadingEarlier={loading}
       user={{
         _id: userId,
         avatar: userInfo.avatar,

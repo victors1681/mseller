@@ -39,7 +39,7 @@ export const useImagePicker = handleImageCallback => {
         console.log('Response = ', response);
         console.log('Response = ', file);
 
-        handleImageCallback(file);
+        handleImageCallback(file, response);
       }
     });
   };

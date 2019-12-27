@@ -17,6 +17,7 @@ export const chatFragments = {
         lastName
         avatar
         email
+        phone
       }
       toUser {
         _id
@@ -27,6 +28,7 @@ export const chatFragments = {
         lastName
         avatar
         email
+        phone
       }
       image
       type

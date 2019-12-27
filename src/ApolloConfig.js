@@ -17,23 +17,20 @@ import {
   API_DEVELOPMENT_ENDPOINT,
 } from 'react-native-dotenv';
 import {WebSocketLink} from 'apollo-link-ws';
-import {ReactNativeFile} from 'apollo-upload-client';
+import {ReactNativeFile, createUploadLink} from 'apollo-upload-client';
 import {rootState} from './states/rootState';
 import {useUserInfo} from './hooks/useUserInfo';
 import {getToken, setToken} from './utils/localStore';
 import resolvers from './resolvers';
 
-const {createUploadLink} = require('apollo-upload-client');
-
 const ApolloConfig = ({children}) => {
   const [apolloClient, setClient] = useState(undefined);
   const {userInfo} = useUserInfo();
 
-  console.log('userInfouserInfo', userInfo);
-
   useEffect(() => {
     const httpLink = createHttpLink({
       uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,
+      credentials: 'same-origin',
     });
     const middlewareLink = new ApolloLink((operation, forward) => {
       operation.setContext({
@@ -46,7 +43,7 @@ const ApolloConfig = ({children}) => {
     });
 
     // use with apollo-client
-    const httpCustomlink = middlewareLink.concat(httpLink);
+    const httpLinkConcat = middlewareLink.concat(httpLink);
 
     const wsLink = new WebSocketLink({
       uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,
@@ -66,7 +63,6 @@ const ApolloConfig = ({children}) => {
       },
     });
 
-    console.log('userInfo.tokenuserInfo.token', userInfo.token);
     const uploadLink = createUploadLink({
       uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT, // Apollo Server is served from port 4000
       headers: {
@@ -108,6 +104,7 @@ const ApolloConfig = ({children}) => {
     );
 
     const isFile = value => {
+      console.log('upload File++++++', value);
       return (
         (typeof ReactNativeFile !== 'undefined' &&
           value instanceof ReactNativeFile) ||
@@ -122,7 +119,7 @@ const ApolloConfig = ({children}) => {
       return kind === 'OperationDefinition' && operation === 'subscription';
     };
 
-    const requestLink2 = split(isSubscriptionOperation, wsLink, httpCustomlink);
+    const requestLink2 = split(isSubscriptionOperation, wsLink, httpLinkConcat);
 
     const terminalLink = split(isUpload, uploadLink, requestLink2);
 

@@ -14,11 +14,11 @@ import {AddIcon} from '../../common/common.styled';
 import {GET_OPEN_CHATS} from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
 
-const ChatListItem = styled(ListItem).attrs(({theme, messageStatus}) => ({
+const ChatListItem = styled(ListItem).attrs(({theme, unread}) => ({
   bottomDivider: true,
   chevron: true,
   subtitleStyle: {
-    fontWeight: messageStatus === 'UNREAD' ? 'bold' : 'normal',
+    fontWeight: unread ? 'bold' : 'normal',
     fontSize: theme.font.size.regular,
   },
   rightSubtitleStyle: {
@@ -47,7 +47,7 @@ const renderItem = (navigation, userId) => ({item}) => {
       subtitle={lastMessageText}
       leftAvatar={avatar}
       rightSubtitle={moment(lastMessageDate).fromNow()}
-      messageStatus={lastMessageUserId !== userId && lastMessageStatus}
+      unread={lastMessageUserId !== userId && lastMessageStatus === 'UNREAD'}
       leftElement={
         !avatar && (
           <EmptyAvatarListItem

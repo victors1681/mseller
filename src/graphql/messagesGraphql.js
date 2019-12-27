@@ -46,3 +46,9 @@ export const ADD_CHAT_MESSAGE = gql`
     addMessage(message: $message)
   }
 `;
+
+export const UPLOAD_MESSAGE_CONTENT = gql`
+  mutation uploadMessageContent($file: Upload!) {
+    uploadMessageContent(file: $file)
+  }
+`;
