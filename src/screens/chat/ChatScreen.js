@@ -114,6 +114,7 @@ const ChatScreen = ({navigation}) => {
 
   return (
     <GiftedChat
+      textInputProps={{autoFocus: true}}
       messages={messages}
       onSend={msgs => onSend(msgs)}
       isLoadingEarlier={loading}

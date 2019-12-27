@@ -26,3 +26,10 @@ export const BackIcon = styled(Icon).attrs(({theme}) => ({
 }))`
   margin-left: 10px;
 `;
+
+export const HeaderIcon = styled(Icon).attrs(({theme}) => ({
+  size: 26,
+  color: theme.colors.primary,
+}))`
+  margin-right: 10px;
+`;
