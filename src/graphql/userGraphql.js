@@ -4,6 +4,8 @@ export const UserBasicInfoFragments = {
   UserBasicInfo: gql`
     fragment UserBasicInfo on User {
       _id
+      fullName
+      initials
       firstName
       lastName
       email
@@ -21,6 +23,8 @@ export const UserInfoFragments = {
     fragment UserInfo on User {
       token
       _id
+      fullName
+      initials
       firstName
       lastName
       email

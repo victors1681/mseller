@@ -18,14 +18,14 @@ const useNavigationHeader = () => {
     const toUser = navigation.getParam('toUser');
     if (fromNewChat) {
       ChatScreen.navigationOptions = () => ({
-        title: toUser.name || `${toUser.firstName} ${toUser.lastName}`,
+        title: toUser.fullName,
         headerLeft: (
           <BackIcon onPress={() => navigation.navigate('ChatHome')} />
         ),
       });
     } else {
       ChatScreen.navigationOptions = () => ({
-        title: toUser.name,
+        title: toUser.fullName,
       });
     }
   }, []);

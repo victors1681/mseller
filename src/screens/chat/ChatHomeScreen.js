@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {GiftedChat, Avatar} from 'react-native-gifted-chat';
+import React, {useEffect} from 'react';
 import {ListItem} from 'react-native-elements';
 import {FlatList, ActivityIndicator} from 'react-native';
-import {useQuery, useMutation} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 import styled from 'styled-components';
 import moment from 'moment';
+import get from 'lodash/get';
 import {
   getLastMessageInfo,
   findReceptorAndEmitterFullObj,
 } from './helper/chatHelper';
 import EmptyAvatarListItem from '../../components/EmptyAvatarListItem';
 import {AddIcon} from '../../common/common.styled';
-import {GET_CHAT_MESSAGES} from '../../graphql/chatGraphql';
+import {GET_OPEN_CHATS} from '../../graphql/chatGraphql';
 import {useUserInfo} from '../../hooks/useUserInfo';
 
 const ChatListItem = styled(ListItem).attrs(({theme, messageStatus}) => ({
@@ -43,7 +43,7 @@ const renderItem = (navigation, userId) => ({item}) => {
     : null;
   return (
     <ChatListItem
-      title={toUser.name}
+      title={toUser.fullName}
       subtitle={lastMessageText}
       leftAvatar={avatar}
       rightSubtitle={moment(lastMessageDate).fromNow()}
@@ -71,9 +71,11 @@ const keyExtractor = (item, index) => index.toString();
 
 const ChatHomeScreen = ({navigation}) => {
   const {userId} = useUserInfo();
-  const {data, loading, refetch} = useQuery(GET_CHAT_MESSAGES, {
+  const {data, loading, ...rest} = useQuery(GET_OPEN_CHATS, {
     fetchPolicy: 'network-only',
   });
+  const refetch = get(rest, 'refetch'); // avoiding issue
+
   useEffect(() => {
     const willFocus = navigation.addListener(
       'didFocus',

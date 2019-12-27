@@ -10,6 +10,9 @@ export const chatFragments = {
       fromUser {
         _id
         name
+        fullName
+        initials
+        defaultColor
         firstName
         lastName
         avatar
@@ -17,7 +20,9 @@ export const chatFragments = {
       }
       toUser {
         _id
-        name
+        fullName
+        initials
+        defaultColor
         firstName
         lastName
         avatar
@@ -37,7 +42,7 @@ export const chatFragments = {
   `,
 };
 
-export const GET_CHAT_MESSAGES = gql`
+export const GET_OPEN_CHATS = gql`
   query get_Chats {
     chats {
       ...Chat
