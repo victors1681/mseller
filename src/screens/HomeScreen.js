@@ -20,6 +20,7 @@ import {
   SummaryValue,
 } from './HomeScreen.styled';
 import {useUserInfo} from '../hooks/useUserInfo';
+import LogOutButton from '../components/LogOutButton';
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -41,6 +42,7 @@ export default function HomeScreen() {
   const {getFullUserName, getCompanyName} = useUserInfo();
   return (
     <ScrollView>
+      <LogOutButton />
       <Header>
         <ProfileWrapper>
           <AvatarImage />

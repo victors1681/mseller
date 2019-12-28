@@ -1,35 +1,109 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
+import {Animated, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Container = styled.View.attrs({
+const Container = styled.SafeAreaView`
+  width: 100%;
+  position: absolute;
+  background: ${({theme}) => theme.colors.error};
+`;
+const AnimationWrapper = styled(Animated.View).attrs({
   shadowColor: 'black',
   shadowOffset: {height: 20},
 })`
-  padding: 20px;
+  flex-direction: row;
   background: ${({theme}) => theme.colors.error};
-  position: absolute;
+  /* position: absolute; */
   z-index: 1;
   width: 100%;
+  justify-content: center;
 `;
 
 const ErrorText = styled(Text)`
   color: white;
-  text-align: center;
+  margin: 8px;
+  font-weight: bold;
 `;
 
-const Toast = ({message, type = 'error', error}) => {
-  if (error && type === 'error') {
+const NetworkIcon = styled(Icon).attrs({
+  name: 'lan-disconnect',
+  size: 20,
+})`
+  color: white;
+  margin: 8px;
+  margin-left: 13px;
+`;
+
+const MessageContainer = styled.View`
+  flex-direction: row;
+  padding-right: 25px;
+`;
+
+// const AnimationContainer = styled.Animated`
+//   opacity: ${({fadeAnim}) => fadeAnim};
+// `;
+
+export const ErrorToast = ({
+  errors: {error, errorType},
+  handleUnMountErrors,
+}) => {
+  const [fadeAnim] = useState(new Animated.Value(0)); //
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 0.9,
+      duration: 500,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => {
+          // unmount component
+          handleUnMountErrors(null);
+        });
+      }, 20000);
+    });
+  }, []);
+
+  const renderGraphQlErrors = () =>
+    error &&
+    error.map(({message, locations, path, extensions: {code}}, i) => {
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${code}`,
+      );
+
+      return (
+        <TouchableOpacity key={i} onPress={() => handleUnMountErrors()}>
+          <ErrorText>{`${message} | code: ${code}`}</ErrorText>
+        </TouchableOpacity>
+      );
+    });
+
+  const renderNetworkError = () => {
     return (
-      <Container>
-        {error.graphQLErrors &&
-          error.graphQLErrors.map(({m}, i) => (
-            <ErrorText key={i}>{m}</ErrorText>
-          ))}
-      </Container>
+      <TouchableOpacity onPress={() => handleUnMountErrors()}>
+        <MessageContainer>
+          <NetworkIcon />
+          <ErrorText>{`${error}`}</ErrorText>
+        </MessageContainer>
+      </TouchableOpacity>
     );
-  }
-  return <Text>{message}</Text>;
+  };
+
+  return (
+    <AnimationWrapper
+      style={{
+        opacity: fadeAnim, // Bind opacity to animated value
+      }}>
+      <Container>
+        {errorType === 'network' ? renderNetworkError() : renderGraphQlErrors()}
+      </Container>
+    </AnimationWrapper>
+  );
 };
 
-export default Toast;
+export default ErrorToast;

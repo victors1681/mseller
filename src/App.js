@@ -18,7 +18,7 @@ import translation from './common/i18n/translation';
 import customTheme from './theme';
 import ApolloConfig from './ApolloConfig';
 import {UserProvider} from './context/userContext';
-
+import {MainProvider} from './context/mainContent';
 import AppNavigator from './navigation/AppNavigator';
 
 // if (Platform.OS === 'android') {
@@ -39,21 +39,23 @@ const App = () => {
       <ThemeConsumer>
         {({theme}) => (
           <ThemeProviderStyledComponent theme={theme}>
-            <UserProvider>
-              <ApolloConfig>
-                <IntlProvider locale="en-US" messages={translation.es}>
-                  <CurrencyProvider>
-                    <AppContainer>
-                      {Platform.OS === 'ios' && (
-                        <StatusBar barStyle="dark-content" />
-                      )}
+            <MainProvider>
+              <UserProvider>
+                <ApolloConfig>
+                  <IntlProvider locale="en-US" messages={translation.es}>
+                    <CurrencyProvider>
+                      <AppContainer>
+                        {Platform.OS === 'ios' && (
+                          <StatusBar barStyle="dark-content" />
+                        )}
 
-                      <AppNavigator />
-                    </AppContainer>
-                  </CurrencyProvider>
-                </IntlProvider>
-              </ApolloConfig>
-            </UserProvider>
+                        <AppNavigator />
+                      </AppContainer>
+                    </CurrencyProvider>
+                  </IntlProvider>
+                </ApolloConfig>
+              </UserProvider>
+            </MainProvider>
           </ThemeProviderStyledComponent>
         )}
       </ThemeConsumer>

@@ -67,7 +67,7 @@ const SignIn = ({navigation}) => {
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <LoginContainer>
           <KeyboardAvoidingView>
-            {error && <Toast error={error} />}
+            {/* {error && <Toast error={error} />} */}
             <LoginHeader>
               <Logo />
             </LoginHeader>
