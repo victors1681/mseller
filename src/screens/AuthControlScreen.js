@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text, ActivityIndicator} from 'react-native';
 import {useLazyQuery} from '@apollo/react-hooks';
-import {getToken} from '../utils/localStore';
+import {getToken, setToken} from '../utils/localStore';
 import {useMain} from '../hooks/useMain';
 import {GET_CURRENT_USER} from '../graphql/userGraphql';
 import Loading from '../components/Loading';
@@ -10,7 +10,7 @@ import {useUserInfo} from '../hooks';
 const AuthControl = ({navigation}) => {
   const {accessToken, setAccessToken} = useMain();
   const {updateUserInfo} = useUserInfo();
-  const [getCurrentUser, {data}] = useLazyQuery(GET_CURRENT_USER);
+  const [getCurrentUser, {data, error}] = useLazyQuery(GET_CURRENT_USER);
   const checkAuth = async () => {
     const userToken = await getToken();
 
@@ -20,9 +20,15 @@ const AuthControl = ({navigation}) => {
       getCurrentUser();
       return;
     }
-
     navigation.navigate(userToken && accessToken ? 'App' : 'Auth');
   };
+
+  useEffect(() => {
+    if (error) {
+      console.log('TOCKEN ERROR::::', error);
+      navigation.navigate('Auth');
+    }
+  }, [error]);
 
   useEffect(() => {
     if (data && data.currentUser) {

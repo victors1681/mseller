@@ -8,6 +8,19 @@ export const VERIFY_CACHE_EXIST_INITIAL_LAUNCH = gql`
   }
 `;
 
+export const GET_DOCUMENT_SEQUENCE = gql`
+  query getNextDocSequence($sellerCode: String!, $documentType: String!) {
+    docSequence(sellerCode: $sellerCode, documentType: $documentType) {
+      nextDocNumber
+      documentType
+      prefix
+      documentType
+      sequenceGenerated
+      description
+    }
+  }
+`;
+
 export const GET_CURRENT_DOCUMENT = gql`
   query localDocument {
     document @client {

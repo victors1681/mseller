@@ -19,7 +19,7 @@ import {ReactNativeFile, createUploadLink} from 'apollo-upload-client';
 import {ErrorToast} from './components/Toast';
 import {VERIFY_CACHE_EXIST_INITIAL_LAUNCH} from './graphql/documentGraphql';
 import {rootState} from './states/rootState';
-import {getToken} from './utils/localStore';
+import {getToken, resetToken} from './utils/localStore';
 import resolvers from './resolvers';
 import {useMain} from './hooks';
 
@@ -27,7 +27,12 @@ const ApolloConfig = ({children}) => {
   const [apolloClient, setClient] = useState(undefined);
 
   const [errors, setErrors] = useState(null);
-  const {setPersistor, setApolloClient, accessToken} = useMain();
+  const {
+    setPersistor,
+    setApolloClient,
+    accessToken,
+    setAccessToken,
+  } = useMain();
 
   const handleUnMountErrors = () => setErrors(null);
 
@@ -54,15 +59,38 @@ const ApolloConfig = ({children}) => {
     return null;
   });
 
-  const onErrorLink = onError(({graphQLErrors, networkError}) => {
-    if (graphQLErrors) {
-      setErrors({errorType: 'graphql', error: graphQLErrors});
-    }
-    if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
-      setErrors({errorType: 'network', error: networkError});
-    }
-  });
+  const onErrorLink = onError(
+    ({graphQLErrors, networkError, operation, forward}) => {
+      console.log(
+        '{graphQLErrors, networkError{graphQLErrors, networkError',
+        graphQLErrors,
+      );
+
+      if (graphQLErrors) {
+        // graphQLErrors.map(error => {
+        //   if (error.extensions.code === 'UNAUTHENTICATED') {
+        //     const {headers} = operation.getContext();
+
+        //     // await resetToken();
+        //     // operation.setContext({
+        //     //   headers: {
+        //     //     ...headers,
+        //     //     authorization: getNewToken(),
+        //     //   },
+        //     // });
+        //     // Now, pass the modified operation to the next link
+        //     // in the chain. This effectively intercepts the old
+        //     // failed request, and retries it with a new token
+        //     return forward(operation);
+        //   }
+        // });
+        setErrors({errorType: 'graphql', error: graphQLErrors});
+      } else if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
+        setErrors({errorType: 'network', error: networkError});
+      }
+    },
+  );
 
   // use with apollo-client
   const httpLinkConcat = middlewareLink.concat(httpLink, onErrorLink);

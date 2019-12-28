@@ -33,7 +33,7 @@ export const GET_CHAT_MESSAGES = gql`
 `;
 
 export const MESSAGE_SUBSCRIPTION = gql`
-  subscription($userId: ID, $listenForUserId: ID) {
+  subscription($userId: ID!, $listenForUserId: ID!) {
     newMessageAdded(userId: $userId, listenForUserId: $listenForUserId) {
       ...Message
     }
