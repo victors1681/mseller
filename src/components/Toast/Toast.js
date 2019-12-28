@@ -15,7 +15,6 @@ const AnimationWrapper = styled(Animated.View).attrs({
 })`
   flex-direction: row;
   background: ${({theme}) => theme.colors.error};
-  /* position: absolute; */
   z-index: 1;
   width: 100%;
   justify-content: center;
@@ -40,10 +39,6 @@ const MessageContainer = styled.View`
   flex-direction: row;
   padding-right: 25px;
 `;
-
-// const AnimationContainer = styled.Animated`
-//   opacity: ${({fadeAnim}) => fadeAnim};
-// `;
 
 export const ErrorToast = ({
   errors: {error, errorType},

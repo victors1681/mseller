@@ -40,8 +40,8 @@ const App = () => {
         {({theme}) => (
           <ThemeProviderStyledComponent theme={theme}>
             <MainProvider>
-              <UserProvider>
-                <ApolloConfig>
+              <ApolloConfig>
+                <UserProvider>
                   <IntlProvider locale="en-US" messages={translation.es}>
                     <CurrencyProvider>
                       <AppContainer>
@@ -53,8 +53,8 @@ const App = () => {
                       </AppContainer>
                     </CurrencyProvider>
                   </IntlProvider>
-                </ApolloConfig>
-              </UserProvider>
+                </UserProvider>
+              </ApolloConfig>
             </MainProvider>
           </ThemeProviderStyledComponent>
         )}

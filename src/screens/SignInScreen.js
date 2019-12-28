@@ -7,6 +7,7 @@ import {PERFORM_LOGIN} from '../graphql/signInSGraphql';
 import {UPDATE_CURRENT_USER} from '../graphql/userGraphql';
 import useTheme from '../hooks/useTheme';
 import {useUserInfo} from '../hooks/useUserInfo';
+import {useMain} from '../hooks';
 import {
   LoginContainer,
   LoginHeader,
@@ -19,8 +20,7 @@ import {
   Headline,
   PoweredBy,
 } from './SignInScreen.styled';
-import Toast from '../components/Toast';
-import {setToken, setUserId} from '../utils/localStore';
+import {setToken} from '../utils/localStore';
 
 const LoginValidation = Yup.object().shape({
   email: Yup.string()
@@ -31,12 +31,12 @@ const LoginValidation = Yup.object().shape({
 const SignIn = ({navigation}) => {
   const theme = useTheme();
   const {updateUserInfo} = useUserInfo();
+  const {setAccessToken} = useMain();
   const [updateTodo, {data, loading, error}] = useMutation(PERFORM_LOGIN, {
     errorPolicy: 'all',
   });
 
   const handleLogin = ({email, password}) => {
-    console.log('Access', email, password);
     updateTodo({
       variables: {
         email,
@@ -47,15 +47,10 @@ const SignIn = ({navigation}) => {
 
   useEffect(() => {
     if (data && data.login.token) {
-      setToken(data.login.token);
-      setUserId(data.login._id);
+      setToken(data.login.token); // localStorage
+      setAccessToken(data.login.token); // Main Context to update apollo links
       updateUserInfo(data.login);
-
-      navigation.navigate('App', {userInfo: data.login});
-    }
-
-    if (loading) {
-      console.log('IS LOADING!!!!!!');
+      navigation.navigate('App');
     }
   }, [data, error, loading, navigation]);
 
@@ -67,7 +62,6 @@ const SignIn = ({navigation}) => {
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <LoginContainer>
           <KeyboardAvoidingView>
-            {/* {error && <Toast error={error} />} */}
             <LoginHeader>
               <Logo />
             </LoginHeader>

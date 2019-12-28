@@ -18,28 +18,29 @@ import {
 const getAvatarList = (navigation, data, userId) => {
   let userChats = [];
   userChats =
-    data &&
-    data.chats.map(chat => {
-      const {toUser} = findReceptorAndEmitterFullObj(chat, userId);
-      const avatar = toUser.avatar ? {uri: toUser.avatar || ''} : null;
-      const lastMessageUserId = get(chat, 'lastMessage.userId');
-      return (
-        <AvatarWrapper key={chat._id}>
-          <UserAvatar
-            overlayContainerStyle={{backgroundColor: toUser.defaultColor}}
-            source={avatar}
-            title={toUser.initials}
-            onPress={() =>
-              navigation.navigate('ChatRoom', {
-                toUser,
-                chatId: chat._id,
-                lastMessageUserId,
-              })}
-          />
-          <UserName>{toUser.firstName}</UserName>
-        </AvatarWrapper>
-      );
-    });
+    (data &&
+      data.chats.map(chat => {
+        const {toUser} = findReceptorAndEmitterFullObj(chat, userId);
+        const avatar = toUser.avatar ? {uri: toUser.avatar || ''} : null;
+        const lastMessageUserId = get(chat, 'lastMessage.userId');
+        return (
+          <AvatarWrapper key={chat._id}>
+            <UserAvatar
+              overlayContainerStyle={{backgroundColor: toUser.defaultColor}}
+              source={avatar}
+              title={toUser.initials}
+              onPress={() =>
+                navigation.navigate('ChatRoom', {
+                  toUser,
+                  chatId: chat._id,
+                  lastMessageUserId,
+                })}
+            />
+            <UserName>{toUser.firstName}</UserName>
+          </AvatarWrapper>
+        );
+      })) ||
+    [];
 
   userChats.push(
     <AvatarWrapper key="new-chat_">
@@ -56,7 +57,7 @@ const getAvatarList = (navigation, data, userId) => {
 const ChatAvatarList = () => {
   const {userId} = useUserInfo();
   const navigation = useContext(NavigationContext);
-  const {data, loading, ...rest} = useQuery(GET_OPEN_CHATS, {
+  const {data, loading} = useQuery(GET_OPEN_CHATS, {
     fetchPolicy: 'network-only',
   });
 

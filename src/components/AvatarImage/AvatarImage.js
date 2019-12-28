@@ -18,7 +18,6 @@ const AvatarImage = () => {
       setAvatarUrl(data.uploadUserAvatar);
     }
   }, [data && data.uploadUserAvatar]);
-  console.log('sss', data, avatarUrl);
 
   const handleImageCallback = imageData => {
     updateUserAvatar({

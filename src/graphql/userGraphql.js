@@ -64,6 +64,15 @@ export const GET_ALL_BUSINESS_USERS = gql`
   ${UserInfoFragments.userInfo}
 `;
 
+export const GET_CURRENT_USER = gql`
+  query currentUser {
+    currentUser {
+      ...UserInfo
+    }
+  }
+  ${UserInfoFragments.userInfo}
+`;
+
 export const UPDATE_CURRENT_USER = gql`
   mutation Update_Current_User($user: User) {
     updateCurrentUser(user: $user) @client

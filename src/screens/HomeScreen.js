@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Ac} from 'react-native';
 import Currency from '../common/Currency';
 import {FinanceButton, ChatAvatarList, WaveChart} from '../components/Home';
 import AvatarImage from '../components/AvatarImage';
