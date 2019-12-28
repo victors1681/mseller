@@ -121,15 +121,6 @@ export const CustomListItem = styled(ListItem)`
   border-bottom-width: 1;
 `;
 
-export const DocumentInfoItem = styled(ListItem).attrs(({theme}) => ({
-  friction: 90,
-  tension: 100,
-  activeScale: 0.95,
-  titleStyle: {color: theme.colors.grey2, fontSize: theme.font.size.medium},
-  subtitleStyle: {color: theme.colors.grey3, fontSize: theme.font.size.regular},
-  chevron: {color: theme.colors.primary},
-}))``;
-
 export const ClientInfoItem = styled(ListItem).attrs(({theme}) => ({
   friction: 90,
   tension: 100,
@@ -142,48 +133,4 @@ export const ClientInfoItem = styled(ListItem).attrs(({theme}) => ({
   subtitleStyle: {color: theme.colors.grey3, fontSize: theme.font.size.regular},
   chevron: {color: theme.colors.primary},
   containerStyle: {marginTop: 10},
-}))``;
-
-export const ItemListFooterWrapper = styled.View`
-  margin-top: 30px;
-`;
-export const ObservationInput = styled(Input).attrs(({theme}) => ({
-  multiline: true,
-  numberOfLines: 2,
-  inputStyle: {
-    fontSize: theme.font.size.regular,
-  },
-  containerStyle: {
-    paddingHorizontal: 0,
-  },
-  inputContainerStyle: {
-    margin: 0,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    paddingLeft: 6,
-    borderColor: theme.colors.grey5,
-    backgroundColor: theme.colors.white,
-  },
-}))``;
-export const AnnotationInput = styled(Input).attrs(({theme}) => ({
-  multiline: true,
-  numberOfLines: 2,
-  inputStyle: {
-    fontSize: theme.font.size.regular,
-  },
-  containerStyle: {
-    paddingHorizontal: 0,
-    paddingTop: 15,
-  },
-  inputContainerStyle: {
-    margin: 0,
-    paddingTop: 5,
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    paddingLeft: 6,
-    borderColor: theme.colors.grey5,
-    backgroundColor: theme.colors.white,
-  },
 }))``;

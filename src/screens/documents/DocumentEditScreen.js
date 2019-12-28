@@ -7,6 +7,7 @@ import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Currency from '../../common/Currency';
 import {GET_CURRENT_DOCUMENT} from '../../graphql/documentGraphql';
 import {REMOVE_ITEM} from '../../graphql/productGraphql';
+import {InfoItem, Annotation} from '../../components/Document';
 import {
   Container,
   SaveIcon,
@@ -21,11 +22,9 @@ import {
   DeleteIcon,
   TouchableItem,
   ActionWrapper,
-  DocumentInfoItem,
   ClientInfoItem,
   CustomListItem,
   ObservationInput,
-  ItemListFooterWrapper,
   AnnotationInput,
   KeyboardAvoidingView,
 } from './DocumentEditScreen.styled';
@@ -58,11 +57,7 @@ const DocumentEditScreen = ({navigation}) => {
   return (
     <KeyboardAvoidingView behavior="padding">
       <Container>
-        <DocumentInfoItem
-          Component={TouchableScale}
-          title="No. 992-0992"
-          subtitle="Order"
-        />
+        <InfoItem />
         <ClientInfoItem
           Component={TouchableScale}
           leftAvatar={<ClientIcon />}
@@ -101,12 +96,7 @@ const DocumentEditScreen = ({navigation}) => {
             </ActionWrapper>
           )}
           rightOpenValue={-75}
-          ListFooterComponent={
-            <ItemListFooterWrapper>
-              <ObservationInput placeholder="Observations" />
-              <AnnotationInput placeholder="Annotation (Internal no visible to the client)" />
-            </ItemListFooterWrapper>
-          }
+          ListFooterComponent={<Annotation />}
         />
 
         <Footer>

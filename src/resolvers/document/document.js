@@ -97,6 +97,38 @@ const documentResolvers = {
 
       return document;
     },
+    /**
+     * @param {documentInfo}  DocumentInput update only fields coming from documentType
+     */
+    updateDocumentInfo: (_root, {documentInfo}, {cache}) => {
+      const {document: localDocument} = cache.readQuery({
+        query: GET_CURRENT_DOCUMENT,
+      });
+
+      const valuesToUpdate = Object.keys(documentInfo).reduce(
+        (acc, currentKeyDoc) => {
+          if (documentInfo[currentKeyDoc]) {
+            return {...acc, [currentKeyDoc]: documentInfo[currentKeyDoc]};
+          }
+          return acc;
+        },
+        {},
+      );
+
+      const documentUpdated = {
+        __typename: 'documentCreation',
+        ...localDocument,
+        ...valuesToUpdate,
+      };
+
+      cache.writeData({
+        data: {
+          document: documentUpdated,
+        },
+      });
+
+      return documentUpdated;
+    },
   },
 };
 
