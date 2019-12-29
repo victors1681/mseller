@@ -27,9 +27,20 @@ export const GET_DOCUMENT_SEQUENCE = gql`
   ${DocSequenceFragment}
 `;
 
+export const ADD_DOCUMENT = gql`
+  mutation addDocument($document: DocumentInput) {
+    addDocument(document: $document)
+  }
+`;
+
 export const UPDATE_DOCUMENT_INFO = gql`
   mutation updateDocumentInfo($documentInfo: DocumentInput) {
     updateDocumentInfo(documentInfo: $documentInfo) @client
+  }
+`;
+export const RESET_CURRENT_DOCUMENT = gql`
+  mutation resetCurrentDocument {
+    resetCurrentDocument @client
   }
 `;
 
@@ -49,6 +60,26 @@ export const GET_CURRENT_DOCUMENT = gql`
         identification
         email
         phonePrimary
+      }
+      currency {
+        id
+        code
+        symbol
+        exchangeRate
+      }
+      seller {
+        id
+        name
+        status
+        identification
+        observation
+      }
+      priceList {
+        id
+        name
+        status
+        type
+        percentage
       }
       total
       totalTax

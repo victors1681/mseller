@@ -41,7 +41,7 @@ const MessageContainer = styled.View`
 `;
 
 export const ErrorToast = ({
-  errors: {error, errorType},
+  errors: {error = [], errorType},
   handleUnMountErrors,
 }) => {
   const [fadeAnim] = useState(new Animated.Value(0)); //
@@ -89,14 +89,32 @@ export const ErrorToast = ({
     );
   };
 
+  const renderRegularErrors = () =>
+    error &&
+    error.map(({message}, i) => {
+      return (
+        <TouchableOpacity key={i} onPress={() => handleUnMountErrors()}>
+          <ErrorText>{`${message}`}</ErrorText>
+        </TouchableOpacity>
+      );
+    });
+
+  const render = () => {
+    if (errorType === 'network') {
+      return renderNetworkError();
+    }
+    if (errorType === 'graphql') {
+      return renderGraphQlErrors;
+    }
+    return renderRegularErrors();
+  };
+
   return (
     <AnimationWrapper
       style={{
         opacity: fadeAnim, // Bind opacity to animated value
       }}>
-      <Container>
-        {errorType === 'network' ? renderNetworkError() : renderGraphQlErrors()}
-      </Container>
+      <Container>{render()}</Container>
     </AnimationWrapper>
   );
 };

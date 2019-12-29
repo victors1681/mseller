@@ -1,2 +1,2 @@
 export * from './InfoItem';
-export * from './Annotation';
+export * from './Footer';

@@ -15,17 +15,11 @@ export const CardHolder = styled(ListItem).attrs(({theme}) => ({
   chevron: {color: theme.colors.primary},
 }))``;
 
-const InfoItem = () => {
-  const {data: sequenceData, loading} = useQuery(GET_DOCUMENT_SEQUENCE, {
-    variables: {
-      sellerCode: '24',
-      documentType: 'invoice',
-    },
-    fetchPolicy: 'network-only',
-  });
+const InfoItem = ({sequenceData, loading, fetchNewSequence}) => {
   const [updateDocumentInfo, {data: documentDataInfo}] = useMutation(
     UPDATE_DOCUMENT_INFO,
   );
+  console.log('Sequence dataaa', sequenceData);
 
   useEffect(() => {
     if (sequenceData) {
@@ -34,6 +28,7 @@ const InfoItem = () => {
       const documentType =
         sequenceData.docSequence && sequenceData.docSequence.documentType;
 
+      console.log('New wsecuence', sequenceData);
       updateDocumentInfo({
         variables: {
           documentInfo: {documentId, documentType},
@@ -47,6 +42,7 @@ const InfoItem = () => {
     <ActivityIndicator />
   ) : (
     <CardHolder
+      onPress={fetchNewSequence}
       Component={TouchableScale}
       title={`No. ${documentDataInfo &&
         documentDataInfo.updateDocumentInfo.documentId}`}

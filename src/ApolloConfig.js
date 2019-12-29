@@ -16,7 +16,7 @@ import {
 } from 'react-native-dotenv';
 import {WebSocketLink} from 'apollo-link-ws';
 import {ReactNativeFile, createUploadLink} from 'apollo-upload-client';
-import {ErrorToast} from './components/Toast';
+
 import {VERIFY_CACHE_EXIST_INITIAL_LAUNCH} from './graphql/documentGraphql';
 import {rootState} from './states/rootState';
 import {getToken, resetToken} from './utils/localStore';
@@ -32,9 +32,8 @@ const ApolloConfig = ({children}) => {
     setApolloClient,
     accessToken,
     setAccessToken,
+    showErrors,
   } = useMain();
-
-  const handleUnMountErrors = () => setErrors(null);
 
   const httpLink = createHttpLink({
     uri: __DEV__ ? API_DEVELOPMENT_ENDPOINT : API_PRODUCTION_ENDPOINT,
@@ -84,10 +83,10 @@ const ApolloConfig = ({children}) => {
         //     return forward(operation);
         //   }
         // });
-        setErrors({errorType: 'graphql', error: graphQLErrors});
+        showErrors({errorType: 'graphql', error: graphQLErrors});
       } else if (networkError) {
         console.log(`[Network error]: ${networkError}`);
-        setErrors({errorType: 'network', error: networkError});
+        showErrors({errorType: 'network', error: networkError});
       }
     },
   );
@@ -179,6 +178,7 @@ const ApolloConfig = ({children}) => {
           data: initData,
         });
       }
+
       setClient(client);
       setApolloClient(client);
     };
@@ -187,14 +187,7 @@ const ApolloConfig = ({children}) => {
   }, [accessToken]);
 
   if (apolloClient === undefined) return <Text>Loading...</Text>;
-  return (
-    <ApolloProvider client={apolloClient}>
-      {errors && (
-        <ErrorToast errors={errors} handleUnMountErrors={handleUnMountErrors} />
-      )}
-      {children}
-    </ApolloProvider>
-  );
+  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 };
 
 AppRegistry.registerComponent('MSeller', () => ApolloConfig);

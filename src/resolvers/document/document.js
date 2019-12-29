@@ -1,4 +1,5 @@
 import {GET_CURRENT_DOCUMENT} from '../../graphql/documentGraphql';
+import {documentLocalState} from '../../states/documentLocalState';
 
 const updateTotals = items => {
   let totalTax = 0;
@@ -16,7 +17,7 @@ const updateTotals = items => {
 
 const documentResolvers = {
   Mutation: {
-    addItem: (_root, {item}, {cache, getCacheKey}) => {
+    addItem: async (_root, {item}, {cache, getCacheKey}) => {
       const id = getCacheKey({__typename: 'documentCreation'});
 
       const {document} = cache.readQuery({
@@ -42,7 +43,7 @@ const documentResolvers = {
 
       return doc.items;
     },
-    removeItem: (_root, {itemId}, {cache, getCacheKey}) => {
+    removeItem: async (_root, {itemId}, {cache, getCacheKey}) => {
       const {document} = cache.readQuery({
         query: GET_CURRENT_DOCUMENT,
       });
@@ -61,7 +62,7 @@ const documentResolvers = {
 
       return document;
     },
-    selectClient: (
+    selectClient: async (
       _root,
       {client: {code, identification, name, email, phonePrimary}},
       {cache, getCacheKey},
@@ -70,14 +71,7 @@ const documentResolvers = {
         query: GET_CURRENT_DOCUMENT,
       });
 
-      console.log(
-        'clientclient',
-        code,
-        identification,
-        name,
-        email,
-        phonePrimary,
-      );
+      console.log('document adding new client', document);
 
       cache.writeData({
         data: {
@@ -100,7 +94,7 @@ const documentResolvers = {
     /**
      * @param {documentInfo}  DocumentInput update only fields coming from documentType
      */
-    updateDocumentInfo: (_root, {documentInfo}, {cache}) => {
+    updateDocumentInfo: async (_root, {documentInfo}, {cache}) => {
       const {document: localDocument} = cache.readQuery({
         query: GET_CURRENT_DOCUMENT,
       });
@@ -128,6 +122,23 @@ const documentResolvers = {
       });
 
       return documentUpdated;
+    },
+    resetCurrentDocument: async (_root, __, {cache}) => {
+      await cache.writeData({
+        data: {
+          document: {...documentLocalState},
+        },
+      });
+      const {document: localDocument} = await cache.readQuery({
+        query: GET_CURRENT_DOCUMENT,
+      });
+      console.log(
+        'documentLocalStatedocumentLocalState',
+        localDocument,
+        documentLocalState,
+      );
+
+      return null;
     },
   },
 };

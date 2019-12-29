@@ -1,9 +1,14 @@
 import React, {useEffect, useRef} from 'react';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import styled from 'styled-components';
-import {Input} from 'react-native-elements';
+import {Alert} from 'react-native';
+import {Input, Button} from 'react-native-elements';
 import get from 'lodash/get';
-import {GET_CURRENT_DOCUMENT, UPDATE_DOCUMENT_INFO} from '../../../graphql';
+import {
+  GET_CURRENT_DOCUMENT,
+  UPDATE_DOCUMENT_INFO,
+  RESET_CURRENT_DOCUMENT,
+} from '../../../graphql';
 
 export const ItemListFooterWrapper = styled.View`
   margin-top: 30px;
@@ -49,14 +54,30 @@ export const AnnotationInput = styled(Input).attrs(({theme}) => ({
     backgroundColor: theme.colors.white,
   },
 }))``;
-const Annotation = () => {
+
+export const ClearButton = styled(Button).attrs(({theme}) => ({
+  titleStyle: {
+    fontSize: theme.font.size.medium,
+    margin: 4,
+    color: theme.colors.error,
+  },
+  buttonStyle: {
+    borderColor: theme.colors.error,
+  },
+  containerStyle: {
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+}))``;
+
+const Footer = () => {
   const observationRef = React.createRef();
   const annotationRef = React.createRef();
   const {data: currentDocument} = useQuery(GET_CURRENT_DOCUMENT);
 
-  const [updateDocumentInfo, {data: documentDataInfo}] = useMutation(
-    UPDATE_DOCUMENT_INFO,
-  );
+  const [updateDocumentInfo] = useMutation(UPDATE_DOCUMENT_INFO);
+  const [resetCurrentDocument] = useMutation(RESET_CURRENT_DOCUMENT);
 
   const handleUpdateAnnotation = annotation => {
     updateDocumentInfo({
@@ -74,30 +95,17 @@ const Annotation = () => {
     });
   };
 
-  useEffect(() => {
-    // Initial Loading
-    if (currentDocument) {
-      observationRef.current.setNativeProps({
-        value: currentDocument.document.observations,
-      });
-      annotationRef.current.setNativeProps({
-        value: currentDocument.document.annotation,
-      });
-    }
-  }, [currentDocument]);
-
-  useEffect(() => {
-    // After update fields
-    if (documentDataInfo) {
-      observationRef.current.setNativeProps({
-        value: get(documentDataInfo, 'updateDocumentInfo.observations', ''),
-      });
-      annotationRef.current.setNativeProps({
-        value: get(documentDataInfo, 'updateDocumentInfo.annotation', ''),
-      });
-    }
-  }, [documentDataInfo]);
-  //   console.log('datadata', documentInfo);
+  const handleConfirmation = () => {
+    Alert.alert(
+      'Reset Current Document',
+      'Are you sure you want to create a new empty document?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => resetCurrentDocument()},
+      ],
+      {cancelable: true},
+    );
+  };
 
   return (
     <ItemListFooterWrapper>
@@ -113,8 +121,13 @@ const Annotation = () => {
         onChangeText={handleUpdateAnnotation}
         value={currentDocument && currentDocument.document.annotation}
       />
+      <ClearButton
+        type="outline"
+        title="Clear Document"
+        onPress={handleConfirmation}
+      />
     </ItemListFooterWrapper>
   );
 };
 
-export default Annotation;
+export default Footer;

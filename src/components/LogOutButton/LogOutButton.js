@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 import {Button} from 'react-native-elements';
 import {useMain} from '../../hooks';
 import {resetToken} from '../../utils/localStore';
+import {rootState} from '../../states/rootState';
 
 const LogOutButton = () => {
   const client = useApolloClient();
@@ -12,6 +13,12 @@ const LogOutButton = () => {
   const navigation = useContext(NavigationContext);
 
   const handleLogOut = async () => {
+    const initData = {
+      ...rootState(),
+    };
+    client.writeData({
+      data: initData,
+    });
     await client.clearStore();
     await persistor.purge();
     await resetToken();
