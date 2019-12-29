@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'rect';
+import React, {useState, useContext} from 'react';
 import {ErrorToast} from '../components/Toast';
 
 export const MainContext = React.createContext();

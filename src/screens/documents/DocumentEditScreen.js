@@ -4,7 +4,7 @@ import {Alert, Text} from 'react-native';
 import {useQuery, useMutation, useLazyQuery} from '@apollo/react-hooks';
 import TouchableScale from 'react-native-touchable-scale';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
-import isEmpty from "lodash/isEmpty"
+import isEmpty from 'lodash/isEmpty';
 import Currency from '../../common/Currency';
 import {
   GET_CURRENT_DOCUMENT,
@@ -32,8 +32,8 @@ import {
   ClientInfoItem,
   CustomListItem,
   KeyboardAvoidingView,
-} from './DocumentEditScreen.styled'; 
-import {useMind} from "../../hooks"
+} from './DocumentEditScreen.styled';
+import {useMind} from '../../hooks';
 
 const renderListItems = ({item}, rowMap) => {
   return (
@@ -53,9 +53,8 @@ const DocumentEditScreen = ({navigation}) => {
   const {showErrors} = useMind();
   const {loading, error, data} = useQuery(GET_CURRENT_DOCUMENT);
   const [removeItem] = useMutation(REMOVE_ITEM);
- 
-  const [validationErrors, setValidationErrors] = useState([]);
 
+  const [
     addDocument,
     {data: documentResponse, error: errorSaving, loading: loadingSave},
   ] = useMutation(ADD_DOCUMENT);
@@ -88,13 +87,16 @@ const DocumentEditScreen = ({navigation}) => {
   // console.log('errorSavingerrorSaving', errorSaving);
 
   const handleSaveValidation = () => {
-   
     // handle validations
-    if(!data.document.client) {validationErrors.push("No client Selected");}
+    if (!data.document.client) {
+      validationErrors.push('No client Selected');
+    }
     // client validation
-    if(isEmpty(data.document.items)) {validationErrors.push("Need to add a product");}
+    if (isEmpty(data.document.items)) {
+      validationErrors.push('Need to add a product');
+    }
 
-    if(!isEmpty(validationErrors)){
+    if (!isEmpty(validationErrors)) {
       showErrors({error: validationErrors});
     }
     // a least one product
