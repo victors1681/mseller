@@ -19,6 +19,7 @@ const ClientScreen = ({navigation}) => {
     const navigateTo = navigation.getParam('pickupClient')
       ? 'DocumentEdit'
       : 'ClientDetail';
+    console.log('client', client);
     if (navigateTo === 'DocumentEdit') {
       selectClient({
         variables: {

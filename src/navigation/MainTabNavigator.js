@@ -9,6 +9,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ClientScreen from '../screens/clients/ClientScreen';
+import ClientDetailScreen from '../screens/clients/ClientDetailScreen';
 import DocumentsHomeScreen from '../screens/documents/DocumentsHomeScreen';
 import DocumentEditScreen from '../screens/documents/DocumentEditScreen';
 import {ChatHomeScreen, ChatScreen, ChatUserList} from '../screens/chat';
@@ -63,6 +64,7 @@ DocumentsStack.path = '';
 const ClientsStack = createStackNavigator(
   {
     Clients: ClientScreen,
+    ClientDetail: ClientDetailScreen,
   },
   config,
 );

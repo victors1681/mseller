@@ -1,24 +1,76 @@
 import gql from 'graphql-tag';
 
+export const ClientBasicInfoFragments = gql`
+  fragment ClientBasicInfo on Client {
+    name
+    code
+    identification
+    email
+    phonePrimary
+    address {
+      address
+      city
+      state
+      country
+    }
+    financial {
+      balance
+      creditLimit
+    }
+  }
+`;
+
 export const GET_CLIENTS = gql`
   query CLIENTS($name: String) {
     clients(name: $name, limit: 10) {
-      name
-      code
-      identification
-      email
-      phonePrimary
-      address {
-        address
-        city
-        state
-        country
-      }
-      financial {
-        balance
-      }
+      ...ClientBasicInfo
     }
   }
+
+  ${ClientBasicInfoFragments}
+`;
+
+export const GET_CLIENT = gql`
+  query CLIENT($code: String) {
+    client(code: $code) {
+      phoneSecondary
+      fax
+      mobile
+      observations
+      type
+      seller {
+        id
+        name
+        identification
+        email
+      }
+      internalContacts {
+        id
+        name
+        phone
+        mobile
+        sendNotification
+        identification
+        status
+      }
+      geoLocation {
+        latitude
+        longitude
+      }
+      status
+      priceList {
+        id
+        name
+        status
+        type
+        percentage
+      }
+
+      ...ClientBasicInfo
+    }
+  }
+
+  ${ClientBasicInfoFragments}
 `;
 
 export const CLIENT_SELECTION = gql`

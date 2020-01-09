@@ -33,7 +33,7 @@ import {
   CustomListItem,
   KeyboardAvoidingView,
 } from './DocumentEditScreen.styled';
-import {useMind} from '../../hooks';
+import {useMain} from '../../hooks';
 
 const renderListItems = ({item}, rowMap) => {
   return (
@@ -50,7 +50,7 @@ const renderListItems = ({item}, rowMap) => {
 };
 
 const DocumentEditScreen = ({navigation}) => {
-  const {showErrors} = useMind();
+  const {showErrors} = useMain();
   const {loading, error, data} = useQuery(GET_CURRENT_DOCUMENT);
   const [removeItem] = useMutation(REMOVE_ITEM);
 
