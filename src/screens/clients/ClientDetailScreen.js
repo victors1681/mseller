@@ -8,6 +8,15 @@ import {Grid, DisplayText, Card, Container} from '../../common';
 import Loading from '../../components/Loading';
 import {GET_CLIENT} from '../../graphql/clientGraphql';
 
+// export const StatusContainer = styled`
+
+// `;
+
+// export const ClientStatus = () => {
+
+//     return  ()
+// }
+
 const ClientDetailScreen = ({navigation}) => {
   const clientCode = navigation.getParam('client').code;
 
