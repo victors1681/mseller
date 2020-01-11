@@ -51,9 +51,10 @@ const ClientDetailScreen = ({navigation}) => {
   const code = get(data, 'client.code', '');
   const email = get(data, 'client.email', '');
   const fax = get(data, 'client.fax', '');
-  const phone = get(data, 'client.phone', '');
+  const phone = get(data, 'client.phonePrimary', '');
   const address = get(data, 'client.address', '');
   const observations = get(data, 'client.observations', '');
+  const identification = get(data, 'client.identification', '');
   const status = get(data, 'client.status', '');
   const geoLocation = get(data, 'client.geoLocation.location.coordinates');
   const contacts = get(data, 'client.internalContacts', []);
@@ -95,9 +96,16 @@ const ClientDetailScreen = ({navigation}) => {
                   <DisplayText label="Code" value={code} />
                 </Grid.Column>
                 <Grid.Column>
-                  <DisplayText label="Email" value={email} />
+                  <DisplayText label="Identification" value={identification} />
                 </Grid.Column>
               </Grid.Row>
+
+              <Grid.Row>
+                <Grid.Column>
+                  <DisplayText capitalize={false} label="Email" value={email} />
+                </Grid.Column>
+              </Grid.Row>
+
               <Grid.Row>
                 <Grid.Column>
                   <DisplayText label="Phone" value={phone} />

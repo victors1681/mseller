@@ -15,13 +15,13 @@ const Label = styled.Text`
 const Value = styled.Text`
   font-size: ${({theme}) => theme.font.size.medium};
   color: ${({theme}) => theme.colors.dark};
-  text-transform: capitalize;
+  text-transform: ${({capitalize}) => (capitalize ? 'capitalize' : 'none')};
 `;
 
-const DisplayText = ({label = '', value = ''}) => (
+const DisplayText = ({label = '', value = '', capitalize = true}) => (
   <Wrapper>
     <Label>{label}</Label>
-    <Value>{value === '' ? '-' : value}</Value>
+    <Value capitalize={capitalize}>{value === '' ? '-' : value}</Value>
   </Wrapper>
 );
 
