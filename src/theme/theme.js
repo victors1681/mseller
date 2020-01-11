@@ -34,9 +34,16 @@ const theme = {
     titleStyle: {
       fontSize: size.regular,
       color: dark,
+      textTransform: 'capitalize',
     },
     subTitleStyle: {
       fontSize: size.verySmall,
+    },
+    rightTitleStyle: {
+      fontSize: size.regular,
+    },
+    rightSubtitleStyle: {
+      fontSize: size.regular,
     },
   },
   colors: {

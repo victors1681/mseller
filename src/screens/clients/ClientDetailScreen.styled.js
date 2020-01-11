@@ -36,6 +36,12 @@ export const ContactList = styled(ListItemNative).attrs(({theme}) => ({
   rightSubtitleStyle: {
     fontSize: theme.font.size.regular,
   },
+  titleStyle: {
+    textTransform: 'capitalize',
+  },
+  subtitleStyle: {
+    fontSize: theme.font.size.regular,
+  },
 }))``;
 
 const subTitleStyle = theme => ({

@@ -48,6 +48,7 @@ export const GET_CLIENT = gql`
       internalContacts {
         id
         name
+        email
         phone
         mobile
         sendNotification
