@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
-import {Divider, ListItem} from 'react-native-elements';
+import {Divider} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import get from 'lodash/get';
-import {ClientName, ClientSuspendedLabel} from './ClientDetailScreen.styled';
+import {FinanceButton} from '../../components/Home';
+import {
+  ClientName,
+  ClientSuspendedLabel,
+  ContactList,
+  FinanceWrapper,
+} from './ClientDetailScreen.styled';
 import {Grid, DisplayText, Card, Container} from '../../common';
 import Loading from '../../components/Loading';
 import {GET_CLIENT} from '../../graphql/clientGraphql';
@@ -14,6 +20,20 @@ const ClientSuspended = ({status = 'A'}) =>
     <ClientSuspendedLabel>Client Suspended</ClientSuspendedLabel>
   ) : null;
 
+export const ClientContacts = ({contacts}) => (
+  <Card title="Contacts">
+    {contacts.map((l, i) => (
+      <ContactList
+        key={i}
+        title={l.name}
+        subtitle={l.email}
+        rightTitle={`P: ${l.phone}`}
+        rightSubtitle={`M: ${l.mobile}`}
+        bottomDivider
+      />
+    ))}
+  </Card>
+);
 const ClientDetailScreen = ({navigation}) => {
   const clientCode = navigation.getParam('client').code;
 
@@ -36,7 +56,7 @@ const ClientDetailScreen = ({navigation}) => {
   const observations = get(data, 'client.observations', '');
   const status = get(data, 'client.status', '');
   const geoLocation = get(data, 'client.geoLocation.location.coordinates');
-  const contacts = get(data, 'client.contacts', []);
+  const contacts = get(data, 'client.internalContacts', []);
 
   const renderMarker = () => {
     if (geoLocation && geoLocation.length) {
@@ -120,22 +140,31 @@ const ClientDetailScreen = ({navigation}) => {
               </Grid.Row>
             </Grid>
           </Card>
-
-          <Card title="Contacts">
-            {contacts.map((l, i) => (
-              <ListItem
-                key={i}
-                title={l.name}
-                subtitle={l.email}
-                rightTitle={l.phone}
-                rightSubtitle={l.mobile}
-                bottomDivider
+          <Card title="Finance">
+            <FinanceWrapper>
+              <FinanceButton
+                title="Account receivable"
+                value={23450.94}
+                action={() => ({})}
               />
-            ))}
+              <FinanceButton
+                highlight
+                chevronOrientation="right"
+                title="Account receivable"
+                value={23450.94}
+                action={() => ({})}
+              />
+            </FinanceWrapper>
           </Card>
-          {geoLocation && (
-            <Map markers={renderMarker()} initialRegion={getInitialRegion()} />
-          )}
+          <ClientContacts contacts={contacts} />
+          <Card title="Geographical Location">
+            {geoLocation && (
+              <Map
+                markers={renderMarker()}
+                initialRegion={getInitialRegion()}
+              />
+            )}
+          </Card>
         </ScrollView>
       )}
     </Container>

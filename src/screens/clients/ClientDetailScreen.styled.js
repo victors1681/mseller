@@ -29,11 +29,26 @@ export const ClientSuspendedLabel = styled.Text`
   margin: -10px -10px 5px -10px;
 `;
 
+export const ContactList = styled(ListItemNative).attrs(({theme}) => ({
+  rightTitleStyle: {
+    fontSize: theme.font.size.regular,
+  },
+  rightSubtitleStyle: {
+    fontSize: theme.font.size.regular,
+  },
+}))``;
+
 const subTitleStyle = theme => ({
   fontSize: theme.font.verySmall,
   color: theme.colors.grey3,
 });
 
+export const FinanceWrapper = styled.View`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+`;
 export const ListItem = styled(ListItemNative).attrs(({theme}) => ({
   subtitleStyle: subTitleStyle(theme),
 }))``;
