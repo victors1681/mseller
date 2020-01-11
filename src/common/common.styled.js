@@ -33,3 +33,8 @@ export const HeaderIcon = styled(Icon).attrs(({theme}) => ({
 }))`
   margin-right: 10px;
 `;
+
+export const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${({theme}) => theme.colors.lightGray};
+`;

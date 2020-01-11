@@ -13,6 +13,7 @@ export const ClientBasicInfoFragments = gql`
       state
       country
     }
+    status
     financial {
       balance
       creditLimit
@@ -57,7 +58,6 @@ export const GET_CLIENT = gql`
         latitude
         longitude
       }
-      status
       priceList {
         id
         name

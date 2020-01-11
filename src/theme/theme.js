@@ -13,6 +13,11 @@ const size = {
 };
 
 const theme = {
+  Divider: {
+    style: {
+      backgroundColor: lightGray,
+    },
+  },
   Header: {
     containerStyle: {
       backgroundColor: lightGray,
@@ -37,6 +42,7 @@ const theme = {
   colors: {
     lightGray,
     titleGray: '#C0C0C0',
+    header: '#6D7278',
     primary: '#0055B3',
     secondary: '#0C0B2A',
     itemSelected: '#C2D7ED',

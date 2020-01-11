@@ -9,13 +9,15 @@ export const Container = styled.SafeAreaView`
 export const Card = styled.View`
   padding: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background: ${({theme}) => theme.colors.white};
 `;
 
 export const ClientName = styled.Text`
   font-size: ${({theme}) => theme.font.size.large};
+  padding-bottom: 8px;
   color: ${({theme}) => theme.colors.dark};
+  text-transform: capitalize;
 `;
 
 const subTitleStyle = theme => ({
