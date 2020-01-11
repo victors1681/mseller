@@ -1,53 +1,84 @@
-import React, {useState} from 'react';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import React, {useState, useEffect} from 'react';
+import MapView, {Marker, PROVIDER_GOOGLE, Circle} from 'react-native-maps';
+import {Platform} from 'react-native';
 import styled from 'styled-components/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import head from 'lodash/head';
+import get from 'lodash/get';
+import {useGeolocation} from '../../hooks';
 
 const Container = styled.View`
   height: 250px;
   background-color: red;
 `;
-const Map = () => {
-  const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.09,
-    longitudeDelta: 0.035,
-  });
-  const [markers, setMarkers] = useState([
-    {
-      title: 'CLIENTE',
-      description: 'My descr',
-      latlng: {latitude: 37.8025259, longitude: -122.4351431},
-    },
-  ]);
 
-  const onRegionChange = () => {};
+const MapViewWrapper = styled(MapView)`
+  height: 100%;
+`;
 
-  const initialRegion = {
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+const CurrentLocation = styled(Circle).attrs(({theme}) => ({
+  strokeWidth: 2,
+  strokeColor: theme.colors.dark,
+  fillColor: theme.colors.primary,
+}))``;
+
+const Map = ({markers, initialRegion}) => {
+  const [region, setRegion] = useState(initialRegion);
+
+  const onRegionChange = () => {
+    console.log('region changeddddddddd');
   };
+
+  const {getCurrentPosition, coords} = useGeolocation();
+
+  useEffect(() => {
+    getCurrentPosition();
+  }, []);
+
+  useEffect(() => {
+    if (coords && !initialRegion) {
+      setRegion({
+        ...region,
+        longitude: coords.longitude,
+        latitude: coords.latitude,
+      });
+    }
+  }, [coords && coords.latitude]);
+
   return (
     <Container>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={{
-          height: '100%',
-        }}
-        initialRegion={initialRegion}
-        region={region}
-        onRegionChange={onRegionChange}>
-        {markers.map((marker, i) => (
-          <Marker
-            key={i}
-            coordinate={marker.latlng}
-            title={marker.title}
-            description={marker.description}
+      {region && (
+        <MapViewWrapper
+          provider={PROVIDER_GOOGLE}
+          initialRegion={initialRegion}
+          region={region}
+          loadingEnabled
+          showsUserLocation
+          showsMyLocationButton={Platform.OS === 'ios'}
+          onRegionChange={onRegionChange}
+          // onMapReady={this._onMapReady}
+          onRegionChangeComplete={onRegionChange}>
+          {/* {coords && (
+          <CurrentLocation
+            center={{
+              latitude: coords && coords.latitude,
+              longitude: coords && coords.longitude,
+            }}
+            radius={200}
           />
-        ))}
-      </MapView>
+        )} */}
+
+          {markers &&
+            markers.map((marker, i) => (
+              <Marker
+                key={i}
+                coordinate={marker.coords}
+                title={marker.title}
+                description={marker.description}
+              />
+            ))}
+        </MapViewWrapper>
+      )}
     </Container>
   );
 };

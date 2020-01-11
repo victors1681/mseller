@@ -16,7 +16,6 @@ const ClientDetailScreen = ({navigation}) => {
     variables: {code: clientCode},
   });
 
-  console.log('datadatadata', data);
   const handleClientSelection = client => () => {
     const navigateTo = navigation.getParam('pickupClient');
 
@@ -31,8 +30,31 @@ const ClientDetailScreen = ({navigation}) => {
   const address = get(data, 'client.address', '');
   const observations = get(data, 'client.observations', '');
   const status = get(data, 'client.status', '');
+  const geoLocation = get(data, 'client.geoLocation.location.coordinates');
   const contacts = get(data, 'client.contacts', []);
 
+  const renderMarker = () => {
+    if (geoLocation && geoLocation.length) {
+      return [
+        {
+          title: `${code}-${clientName}`,
+          description: phone,
+          coords: {longitude: geoLocation[0], latitude: geoLocation[1]},
+        },
+      ];
+    }
+
+    return null;
+  };
+
+  const getInitialRegion = () => {
+    return {
+      longitude: geoLocation[0],
+      latitude: geoLocation[1],
+      latitudeDelta: 0.0422,
+      longitudeDelta: 0.0221,
+    };
+  };
   return (
     <Container>
       {loading ? (
@@ -94,7 +116,7 @@ const ClientDetailScreen = ({navigation}) => {
             </Grid>
           </Card>
 
-          {/* <Card title="Contacts">
+          <Card title="Contacts">
             {contacts.map((l, i) => (
               <ListItem
                 key={i}
@@ -105,8 +127,10 @@ const ClientDetailScreen = ({navigation}) => {
                 bottomDivider
               />
             ))}
-          </Card> */}
-          <Map />
+          </Card>
+          {geoLocation && (
+            <Map markers={renderMarker()} initialRegion={getInitialRegion()} />
+          )}
         </ScrollView>
       )}
     </Container>

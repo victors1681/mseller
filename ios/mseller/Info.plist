@@ -39,12 +39,16 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>MSeller requires camera access to your library</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>MSeller requires access to the photo library.</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>MSeller requires access to the photo library.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>MSeller Locate clients and orders</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Help to locate clients near by and track routes</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>User location to show clients near by</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MSeller requires access to the photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MSeller requires access to the photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaterialCommunityIcons.ttf</string>

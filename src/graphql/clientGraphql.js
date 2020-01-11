@@ -55,8 +55,10 @@ export const GET_CLIENT = gql`
         status
       }
       geoLocation {
-        latitude
-        longitude
+        location {
+          type
+          coordinates
+        }
       }
       priceList {
         id
