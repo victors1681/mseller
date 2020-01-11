@@ -15,9 +15,18 @@ export const Card = styled.View`
 
 export const ClientName = styled.Text`
   font-size: ${({theme}) => theme.font.size.large};
-  padding-bottom: 8px;
+  padding-bottom: 5px;
   color: ${({theme}) => theme.colors.dark};
   text-transform: capitalize;
+`;
+
+export const ClientSuspendedLabel = styled.Text`
+  font-size: ${({theme}) => theme.font.size.large};
+  padding: 5px;
+  color: ${({theme}) => theme.colors.white};
+  background-color: ${({theme}) => theme.colors.error};
+  text-align: center;
+  margin: -10px -10px 5px -10px;
 `;
 
 const subTitleStyle = theme => ({

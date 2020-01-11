@@ -11,7 +11,6 @@ const Container = styled.SafeAreaView`
 `;
 const AnimationWrapper = styled(Animated.View).attrs({
   shadowColor: 'black',
-  shadowOffset: {height: 20},
 })`
   flex-direction: row;
   background: ${({theme}) => theme.colors.error};

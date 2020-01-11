@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import MapView, {Marker, PROVIDER_GOOGLE, Circle} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Platform} from 'react-native';
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import head from 'lodash/head';
-import get from 'lodash/get';
 import {useGeolocation} from '../../hooks';
 
 const Container = styled.View`
   height: 250px;
-  background-color: red;
 `;
 
 const MapViewWrapper = styled(MapView)`

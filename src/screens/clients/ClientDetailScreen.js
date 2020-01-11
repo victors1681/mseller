@@ -3,11 +3,16 @@ import {Divider, ListItem} from 'react-native-elements';
 import {ScrollView} from 'react-native';
 import {useQuery, useMutation} from '@apollo/react-hooks';
 import get from 'lodash/get';
-import {ClientName} from './ClientDetailScreen.styled';
+import {ClientName, ClientSuspendedLabel} from './ClientDetailScreen.styled';
 import {Grid, DisplayText, Card, Container} from '../../common';
 import Loading from '../../components/Loading';
 import {GET_CLIENT} from '../../graphql/clientGraphql';
 import Map from '../../components/Map';
+
+const ClientSuspended = ({status = 'A'}) =>
+  status === 'S' ? (
+    <ClientSuspendedLabel>Client Suspended</ClientSuspendedLabel>
+  ) : null;
 
 const ClientDetailScreen = ({navigation}) => {
   const clientCode = navigation.getParam('client').code;
@@ -49,8 +54,8 @@ const ClientDetailScreen = ({navigation}) => {
 
   const getInitialRegion = () => {
     return {
-      longitude: geoLocation[0],
-      latitude: geoLocation[1],
+      longitude: geoLocation && geoLocation[0],
+      latitude: geoLocation && geoLocation[1],
       latitudeDelta: 0.0422,
       longitudeDelta: 0.0221,
     };
@@ -62,9 +67,9 @@ const ClientDetailScreen = ({navigation}) => {
       ) : (
         <ScrollView>
           <Card>
+            <ClientSuspended status={status} />
             <ClientName>{clientName}</ClientName>
             <Grid>
-              <DisplayText label="status" value={status} />
               <Grid.Row>
                 <Grid.Column>
                   <DisplayText label="Code" value={code} />
