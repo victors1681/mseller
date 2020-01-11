@@ -39,7 +39,12 @@ target 'mseller' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
-
+ 
+  # React Native Maps dependencies
+   rn_maps_path = '../node_modules/react-native-maps'
+   pod 'react-native-google-maps', :path => rn_maps_path
+   pod 'GoogleMaps'
+   pod 'Google-Maps-iOS-Utils'
   target 'msellerTests' do
     inherit! :search_paths
     # Pods for testing

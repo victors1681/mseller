@@ -7,15 +7,7 @@ import {ClientName} from './ClientDetailScreen.styled';
 import {Grid, DisplayText, Card, Container} from '../../common';
 import Loading from '../../components/Loading';
 import {GET_CLIENT} from '../../graphql/clientGraphql';
-
-// export const StatusContainer = styled`
-
-// `;
-
-// export const ClientStatus = () => {
-
-//     return  ()
-// }
+import Map from '../../components/Map';
 
 const ClientDetailScreen = ({navigation}) => {
   const clientCode = navigation.getParam('client').code;
@@ -102,7 +94,7 @@ const ClientDetailScreen = ({navigation}) => {
             </Grid>
           </Card>
 
-          <Card title="Contacts">
+          {/* <Card title="Contacts">
             {contacts.map((l, i) => (
               <ListItem
                 key={i}
@@ -113,7 +105,8 @@ const ClientDetailScreen = ({navigation}) => {
                 bottomDivider
               />
             ))}
-          </Card>
+          </Card> */}
+          <Map />
         </ScrollView>
       )}
     </Container>

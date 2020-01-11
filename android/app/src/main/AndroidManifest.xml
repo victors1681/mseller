@@ -29,6 +29,10 @@
           android:exported="true">
       </activity>
 
+  <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="AIzaSyCK9Y94vh-S_GFYCMKV2zeYoeQ5cAoYTdg"/>
+
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 
