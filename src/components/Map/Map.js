@@ -16,17 +16,11 @@ const MapViewWrapper = styled(MapView)`
   height: 100%;
 `;
 
-const CurrentLocation = styled(Circle).attrs(({theme}) => ({
-  strokeWidth: 2,
-  strokeColor: theme.colors.dark,
-  fillColor: theme.colors.primary,
-}))``;
-
 const Map = ({markers, initialRegion}) => {
   const [region, setRegion] = useState(initialRegion);
 
   const onRegionChange = () => {
-    console.log('region changeddddddddd');
+    console.log('region changed');
   };
 
   const {getCurrentPosition, coords} = useGeolocation();
@@ -56,18 +50,7 @@ const Map = ({markers, initialRegion}) => {
           showsUserLocation
           showsMyLocationButton={Platform.OS === 'ios'}
           onRegionChange={onRegionChange}
-          // onMapReady={this._onMapReady}
           onRegionChangeComplete={onRegionChange}>
-          {/* {coords && (
-          <CurrentLocation
-            center={{
-              latitude: coords && coords.latitude,
-              longitude: coords && coords.longitude,
-            }}
-            radius={200}
-          />
-        )} */}
-
           {markers &&
             markers.map((marker, i) => (
               <Marker
