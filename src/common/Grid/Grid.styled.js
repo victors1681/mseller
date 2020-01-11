@@ -16,9 +16,6 @@ export const Column = styled.View`
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  @media screen and (min-width: 700px) {
-    flex: 1;
-  }
 `;
 
 export const DoubleColumn = styled.View`
